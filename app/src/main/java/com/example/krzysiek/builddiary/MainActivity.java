@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
@@ -40,19 +41,17 @@ public class MainActivity extends Activity {
         private static final int MENU_DELETE = Menu.FIRST;
         private static final int MENU_DUMP = Menu.FIRST + 1;
 
-
         ItemListAdapter mAdapter;
-
+        TextView summaryView;
         ListView listView;
+        Button addButton;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
             // Create a new TodoListAdapter for this ListActivity's ListView
-
-            Button addButton;
-
+            
             mAdapter = new ItemListAdapter(getApplicationContext());
 
             // Put divider between ToDoItems and FooterView
@@ -74,9 +73,9 @@ public class MainActivity extends Activity {
         //   getListView().addFooterView(footerView);
 
             // Attach Listener to FooterView
-          addButton = (Button) findViewById(R.id.addbutton);
+          //addButton = (Button) findViewById(R.id.addbutton);
 
-
+//dupadupadupadupa
 
         //    footerView.setOnClickListener(new OnClickListener() {
         //        @Override
@@ -93,6 +92,7 @@ public class MainActivity extends Activity {
           //  setListAdapter(mAdapter);
 
             setContentView(R.layout.main);
+            summaryView = (TextView) findViewById(R.id.summaryView);
             listView = (ListView) findViewById(R.id.listView);
             listView.setAdapter(mAdapter);
 
@@ -130,6 +130,7 @@ public class MainActivity extends Activity {
                     //String result=data.getStringExtra("zwrot");
                     //mUserTextView.setText(result);
                     // Do something with the contact here (bigger example below)
+                    totalCostUpdate();
                 }
             }
         }
@@ -196,12 +197,12 @@ public class MainActivity extends Activity {
                 reader = new BufferedReader(new InputStreamReader(fis));
 
                 String title = null;
-                Double cost = null;
+                String cost = null;
                 String status = null;
                 Date date = null;
 
                 while (null != (title = reader.readLine())) {
-                    cost = Double.valueOf(reader.readLine());
+                    cost = reader.readLine();
                     status = reader.readLine();
                     date = Item.FORMAT.parse(reader.readLine());
                     mAdapter.add(new Item(title, cost,
@@ -245,5 +246,10 @@ public class MainActivity extends Activity {
                     writer.close();
                 }
             }
+        }
+
+        public void totalCostUpdate(){
+            summaryView.setText(String.valueOf(mAdapter.getCount()));
+
         }
     }
