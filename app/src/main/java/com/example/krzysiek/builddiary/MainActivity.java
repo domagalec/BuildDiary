@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -90,9 +91,14 @@ public class MainActivity extends Activity {
 
             // - Attach the adapter to this ListActivity's ListView
           //  setListAdapter(mAdapter);
+
             setContentView(R.layout.main);
             listView = (ListView) findViewById(R.id.listView);
             listView.setAdapter(mAdapter);
+
+           //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+          // setSupportActionBar(toolbar);
+
 
             addButton = (Button) findViewById(R.id.addbutton);
             addButton.setOnClickListener(new OnClickListener() {
