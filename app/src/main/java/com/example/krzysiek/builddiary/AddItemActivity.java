@@ -22,9 +22,6 @@ import java.util.Date;
 
 public class AddItemActivity extends Activity {
 
-    // 7 days in milliseconds - 7 * 24 * 60 * 60 * 1000
-    private static final int SEVEN_DAYS = 604800000;
-
     private static final String TAG = "BuildDiary";
 
     private static String timeString;
@@ -137,7 +134,7 @@ public class AddItemActivity extends Activity {
 
 
                 // Construct the Date string
-                String fullDate = dateString + " " + timeString;
+                String fullDate = dateString;
 
                 // Package ToDoItem data into an Intent
                 Intent data = new Intent();
@@ -160,23 +157,23 @@ public class AddItemActivity extends Activity {
 
         // Default is current time + 7 days
         mDate = new Date();
-        mDate = new Date(mDate.getTime() + SEVEN_DAYS);
+        mDate = new Date(mDate.getTime());
 
         Calendar c = Calendar.getInstance();
         c.setTime(mDate);
 
-        setDateString(c.get(Calendar.YEAR), c.get(Calendar.MONTH),
-                c.get(Calendar.DAY_OF_MONTH));
+        setDateString(c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.MONTH),
+                c.get(Calendar.YEAR));
 
         dateView.setText(dateString);
 
-        setTimeString(c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE),
-                c.get(Calendar.MILLISECOND));
+        //setTimeString(c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE),
+        //        c.get(Calendar.MILLISECOND));
 
         //timeView.setText(timeString);
     }
 
-    private static void setDateString(int year, int monthOfYear, int dayOfMonth) {
+    private static void setDateString(int dayOfMonth, int monthOfYear, int year) {
 
         // Increment monthOfYear for Calendar/Date -> Time Format setting
         monthOfYear++;
@@ -188,10 +185,10 @@ public class AddItemActivity extends Activity {
         if (dayOfMonth < 10)
             day = "0" + dayOfMonth;
 
-        dateString = year + "-" + mon + "-" + day;
+        dateString = day + "-" + mon + "-" + year;
     }
 
-    private static void setTimeString(int hourOfDay, int minute, int mili) {
+   /* private static void setTimeString(int hourOfDay, int minute, int mili) {
         String hour = "" + hourOfDay;
         String min = "" + minute;
 
@@ -201,7 +198,7 @@ public class AddItemActivity extends Activity {
             min = "0" + minute;
 
         timeString = hour + ":" + min + ":00";
-    }
+    }*/
 
     private String getCost() {return mCost.getText().toString();
 
@@ -256,7 +253,7 @@ public class AddItemActivity extends Activity {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear,
                               int dayOfMonth) {
-            setDateString(year, monthOfYear, dayOfMonth);
+            setDateString(dayOfMonth, monthOfYear, year);
 
             dateView.setText(dateString);
         }
