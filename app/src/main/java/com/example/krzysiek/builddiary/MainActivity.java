@@ -94,6 +94,7 @@ public class MainActivity extends Activity {
             listView = (ListView) findViewById(R.id.listView);
             listView.setAdapter(mAdapter);
 
+
            //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
           // setSupportActionBar(toolbar);
 
@@ -143,6 +144,8 @@ public class MainActivity extends Activity {
 
             if (mAdapter.getCount() == 0)
                 loadItems();
+            totalCostUpdate();
+
         }
 
         @Override
@@ -246,7 +249,11 @@ public class MainActivity extends Activity {
         }
 
         public void totalCostUpdate(){
-            summaryView.setText(String.valueOf(mAdapter.getCount()));
+            double total=0;
+            for (int i = 0; i < mAdapter.getCount(); i++) {
+                total = total+((Item) mAdapter.getItem(i)).getCost();
+            }
+            summaryView.setText(String.valueOf(total));
 
         }
     }
