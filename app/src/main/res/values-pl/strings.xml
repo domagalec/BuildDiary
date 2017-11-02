@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BuildDiary</string>
+    <string name="action_settings">Ustawienia</string>
+    <string name="create_project">Utwórz</string>
+    <string name="cancel">Anuluj</string>
+    <string name="create_alert_title">Nowy projekt</string>
+    <string name="item_name">Nazwa</string>
+    <string name="item_category">Wybierz kategorię</string>
+    <string name="item_date">Data</string>
+    <string name="item_cost">Koszt</string>
+    <string name="item_add">Dodaj</string>
+    <string name="reset">Zresetuj</string>
+</resources>
