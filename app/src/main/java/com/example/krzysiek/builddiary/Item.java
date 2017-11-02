@@ -19,32 +19,32 @@ public class Item {
     };
 
     public final static String TITLE = "title";
-    public final static String COST = "priority";
+    public final static String COST = "cost";
     public final static String STATUS = "status";
     public final static String DATE = "date";
     public final static String FILENAME = "filename";
 
     public final static SimpleDateFormat FORMAT = new SimpleDateFormat(
-            "dd-MM-yyyy HH:mm:ss", Locale.UK);
+            "dd-MM-yyyy", Locale.US);
 
     private String mTitle = new String();
-    private Double mCost = 0.0;
+    private String mCost = new String();
     private Status mStatus = Status.NOTDONE;
     private Date mDate = new Date();
 
-    Item(String title, Double cost, Status status, Date date) {
+    Item(String title, String cost, Status status, Date date) {
         this.mTitle = title;
         this.mCost = cost;
         this.mStatus = status;
         this.mDate = date;
     }
 
-    // Create a new ToDoItem from data packaged in an Intent
+    // Create a new Item from data packaged in an Intent
 
     Item(Intent intent) {
 
         mTitle = intent.getStringExtra(Item.TITLE);
-        mCost = Double.valueOf(intent.getStringExtra(Item.COST));
+        mCost = intent.getStringExtra(Item.COST);
 //        mStatus = Status.valueOf(intent.getStringExtra(Item.STATUS));
 
         try {
@@ -62,11 +62,11 @@ public class Item {
         mTitle = title;
     }
 
-    public Double getCost() {
+    public String getCost() {
         return mCost;
     }
 
-    public void setCost(Double cost) {
+    public void setCost(String cost) {
         mCost = cost;
     }
 
@@ -93,7 +93,7 @@ public class Item {
                                      String cost, Status status, String date) {
 
         intent.putExtra(Item.TITLE, title);
-        intent.putExtra(Item.COST, cost.toString());
+        intent.putExtra(Item.COST, cost);
        // intent.putExtra(Item.STATUS, status.toString());
         intent.putExtra(Item.DATE, date);
 
