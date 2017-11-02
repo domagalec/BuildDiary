@@ -11,4 +11,5 @@
     <string name="item_cost">Koszt</string>
     <string name="item_add">Dodaj</string>
     <string name="reset">Zresetuj</string>
+    <string name="total_cost">Całkowity koszt</string>
 </resources>
