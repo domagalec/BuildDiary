@@ -22,6 +22,7 @@ public class Item {
     public final static String COST = "cost";
     public final static String STATUS = "status";
     public final static String DATE = "date";
+    public final static String CATEGORY = "category";
     public final static String FILENAME = "filename";
 
     public final static SimpleDateFormat FORMAT = new SimpleDateFormat(

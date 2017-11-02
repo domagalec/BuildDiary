@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
@@ -20,103 +21,57 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/TitleLabel"
-        android:layout_marginTop="14dp"
         android:ems="10"
         android:hint="@string/item_name"
         android:inputType="textShortMessage">
-
         <requestFocus />
     </EditText>
 
-    <!-- Status -->
-
-   <!-- <TextView
-        android:id="@+id/status"
+    <TextView
+        android:id="@+id/CostLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/title"
-        android:layout_marginTop="25dp"
-        android:text="@string/status_string"
+        android:layout_below="@id/title"
+        android:layout_marginTop="14dp"
+        android:text="@string/item_cost"
         android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <RadioGroup
-        android:id="@+id/statusGroup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/status"
-        android:orientation="horizontal"
-        android:layout_marginTop="12dp" >
-
-        <RadioButton
-            android:id="@+id/statusDone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/done_string" />
-
-        <RadioButton
-            android:id="@+id/statusNotDone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="@string/not_done_string" />
-    </RadioGroup>
-
-    Priority -->
 
     <EditText
         android:id="@+id/cost"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/title"
-        android:layout_marginTop="14dp"
+        android:layout_below="@+id/CostLabel"
         android:ems="10"
         android:hint="@string/item_cost"
         android:inputType="numberDecimal">
     </EditText>
 
-
-   <!-- <RadioGroup
-        android:id="@+id/priorityGroup"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/CategoryLabel"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/priority"
-        android:orientation="horizontal"
-        android:layout_marginTop="12dp"
-        android:text="@string/priority_string" >
+        android:layout_below="@id/cost"
+        android:layout_marginTop="14dp"
+        android:text="@string/item_category"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <RadioButton
-            android:id="@+id/lowPriority"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/priority_low_string" />
-
-        <RadioButton
-            android:id="@+id/medPriority"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="@string/priority_medium_string" />
-
-        <RadioButton
-            android:id="@+id/highPriority"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/priority_high_string" />
-    </RadioGroup>
-
-     Time and Date -->
+    <Spinner
+        android:id="@+id/category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/CategoryLabel" />
 
     <TextView
         android:id="@+id/time_and_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/cost"
-        android:layout_marginTop="25dp"
+        android:layout_below="@id/category"
+        android:layout_marginTop="14dp"
         android:text="@string/item_date"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -129,14 +84,6 @@
         android:layout_marginTop="12dp"
         android:text="@string/item_date" />
 
-    <!--<TextView
-        android:id="@+id/time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/time_and_date"
-        android:text="@string/no_time_set_string" />-->
-
     <Button
         android:id="@+id/date_picker_button"
         android:layout_width="wrap_content"
@@ -144,17 +91,6 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@id/date"
         android:text="@string/item_date" />
-
-  <!--  <Button
-        android:id="@+id/time_picker_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@id/date_picker_button"
-        android:layout_below="@id/time"
-        android:text="@string/choose_time_string" />
-
-    Buttons -->
 
     <Button
         android:id="@+id/cancelButton"
