@@ -102,6 +102,7 @@ public class AddItemActivity extends Activity {
               //  mPriorityRadioGroup.check(R.id.medPriority);
                // mStatusRadioGroup.check(R.id.statusNotDone);
                 mTitleText.setText(null);
+                mCost.setText(null);
 
 
                 // reset date and time
@@ -121,8 +122,8 @@ public class AddItemActivity extends Activity {
                 // gather ToDoItem data
 
 
-                // Get the current Priority
-                String cost = getCost();
+                // Get the current cost
+                Double cost = getCost();
 
                 // Get the current Status
                Status status = getStatus();
@@ -200,7 +201,9 @@ public class AddItemActivity extends Activity {
         timeString = hour + ":" + min + ":00";
     }*/
 
-    private String getCost() {return mCost.getText().toString();
+    private Double getCost() {return Double.valueOf(mCost.getText().toString());}
+
+    /*{return mCost.getText().toString();
 
        /* switch (mPriorityRadioGroup.getCheckedRadioButtonId()) {
             case R.id.lowPriority: {
@@ -213,7 +216,6 @@ public class AddItemActivity extends Activity {
                 return Priority.MED;
             }
         }*/
-    }
 
     private Status getStatus() {
 

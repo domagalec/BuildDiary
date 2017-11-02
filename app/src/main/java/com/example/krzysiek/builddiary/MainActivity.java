@@ -203,8 +203,7 @@ public class MainActivity extends Activity {
                     cost = reader.readLine();
                     status = reader.readLine();
                     date = Item.FORMAT.parse(reader.readLine());
-                    mAdapter.add(new Item(title, cost,
-                            Status.valueOf(status), date));
+                    mAdapter.add(new Item(title, Double.valueOf(cost), Status.valueOf(status), date));
                 }
 
             } catch (FileNotFoundException e) {

@@ -15,18 +15,12 @@
         android:layout_weight="1">
 
         <TextView
-            android:id="@+id/dateView"
-            android:layout_width="wrap_content"
+            android:id="@+id/titleView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/DateLabel"
-            android:layout_toRightOf="@+id/DateLabel"/>
-
-        <TextView
-            android:id="@+id/costView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/CostLabel"
-            android:layout_toRightOf="@+id/titleView"/>
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
 
         <TextView
             android:id="@+id/DateLabel"
@@ -34,7 +28,15 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@id/titleView"
-            android:text="@string/item_date" />
+            android:text="@string/item_date"/>
+
+        <TextView
+            android:id="@+id/dateView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/DateLabel"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/DateLabel" />
 
         <TextView
             android:id="@+id/CostLabel"
@@ -45,13 +47,13 @@
             android:text="@string/item_cost" />
 
         <TextView
-            android:id="@+id/titleView"
-            android:layout_width="match_parent"
+            android:id="@+id/costView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:textAppearance="?android:attr/textAppearanceLarge"/>
-
+            android:layout_alignBaseline="@+id/dateView"
+            android:layout_marginLeft="5dp"
+            android:layout_alignParentRight="true"
+           />
 
     </RelativeLayout>
 
@@ -86,10 +88,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="@string/item_add"
             android:layout_alignParentTop="true"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            />
+            android:text="@string/item_add"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
     </RelativeLayout>
 

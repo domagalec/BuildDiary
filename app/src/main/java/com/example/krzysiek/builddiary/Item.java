@@ -28,11 +28,11 @@ public class Item {
             "dd-MM-yyyy", Locale.US);
 
     private String mTitle = new String();
-    private String mCost = new String();
+    private Double mCost = 0.0;
     private Status mStatus = Status.NOTDONE;
     private Date mDate = new Date();
 
-    Item(String title, String cost, Status status, Date date) {
+    Item(String title, Double cost, Status status, Date date) {
         this.mTitle = title;
         this.mCost = cost;
         this.mStatus = status;
@@ -44,7 +44,7 @@ public class Item {
     Item(Intent intent) {
 
         mTitle = intent.getStringExtra(Item.TITLE);
-        mCost = intent.getStringExtra(Item.COST);
+        mCost = intent.getDoubleExtra(Item.COST, 0.0);
 //        mStatus = Status.valueOf(intent.getStringExtra(Item.STATUS));
 
         try {
@@ -62,11 +62,11 @@ public class Item {
         mTitle = title;
     }
 
-    public String getCost() {
+    public Double getCost() {
         return mCost;
     }
 
-    public void setCost(String cost) {
+    public void setCost(Double cost) {
         mCost = cost;
     }
 
@@ -90,7 +90,7 @@ public class Item {
     // package them for transport in an Intent
 
     public static void packageIntent(Intent intent, String title,
-                                     String cost, Status status, String date) {
+                                     Double cost, Status status, String date) {
 
         intent.putExtra(Item.TITLE, title);
         intent.putExtra(Item.COST, cost);
