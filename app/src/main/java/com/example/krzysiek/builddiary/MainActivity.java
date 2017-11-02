@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -75,7 +74,6 @@ public class MainActivity extends Activity {
             // Attach Listener to FooterView
           //addButton = (Button) findViewById(R.id.addbutton);
 
-//dupadupadupadupa
 
         //    footerView.setOnClickListener(new OnClickListener() {
         //        @Override

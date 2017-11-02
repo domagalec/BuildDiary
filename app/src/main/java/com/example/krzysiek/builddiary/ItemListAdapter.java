@@ -150,7 +150,7 @@ public class ItemListAdapter extends BaseAdapter {
             }
         });*/
 
-        // TODO - Display Priority in a TextView
+        // TODO - Display Cost in a TextView
         final TextView costView = (TextView) itemLayout.findViewById(R.id.costView);
         costView.setText(item.getCost().toString());
 
