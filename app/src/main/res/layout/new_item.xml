@@ -75,8 +75,6 @@
         android:ems="10"
         android:hint="@string/item_cost"
         android:inputType="numberDecimal">
-
-        <requestFocus />
     </EditText>
 
 

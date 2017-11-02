@@ -1,5 +1,6 @@
 package com.example.krzysiek.builddiary;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -152,7 +153,7 @@ public class ItemListAdapter extends BaseAdapter {
 
         // TODO - Display Cost in a TextView
         final TextView costView = (TextView) itemLayout.findViewById(R.id.costView);
-        costView.setText(item.getCost().toString());
+        costView.setText(new DecimalFormat("##.00").format(item.getCost()));
 
         // TODO - Display Time and Date.
         // Hint - use ToDoItem.FORMAT.format(toDoItem.getDate()) to get date and

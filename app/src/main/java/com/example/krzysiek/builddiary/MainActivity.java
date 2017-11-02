@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.Date;
 
@@ -93,6 +94,8 @@ public class MainActivity extends Activity {
             summaryView = (TextView) findViewById(R.id.summaryView);
             listView = (ListView) findViewById(R.id.listView);
             listView.setAdapter(mAdapter);
+
+            totalCostUpdate();
 
 
            //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -253,7 +256,7 @@ public class MainActivity extends Activity {
             for (int i = 0; i < mAdapter.getCount(); i++) {
                 total = total+((Item) mAdapter.getItem(i)).getCost();
             }
-            summaryView.setText(String.valueOf(total));
-
+            summaryView.setText(new DecimalFormat("##.00").format(total));
+           // String.valueOf(total)
         }
     }
