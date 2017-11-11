@@ -31,7 +31,6 @@ import java.util.Date;
 
 //import com.example.krzysiek.builddiary.Item.Status;
 
-
 public class MainActivity extends Activity {
 
         private static final int ADD_TODO_ITEM_REQUEST = 0;
@@ -47,7 +46,6 @@ public class MainActivity extends Activity {
         ListView listView;
         Button addButton;
 
-
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -58,7 +56,6 @@ public class MainActivity extends Activity {
 
             // Put divider between ToDoItems and FooterView
         //    getListView().setFooterDividersEnabled(true);
-
             // BYŁODOZROBIENIA - Inflate footerView for footer_view.xml file
            // LayoutInflater inflater = (LayoutInflater)this.getSystemService
            // 		(this.LAYOUT_INFLATER_SERVICE);
@@ -71,24 +68,17 @@ public class MainActivity extends Activity {
             //	return;
             //}
             //DOZROBIENIABYLO - Add footerView to ListView
-
         //   getListView().addFooterView(footerView);
-
             // Attach Listener to FooterView
           //addButton = (Button) findViewById(R.id.addbutton);
-
-
         //    footerView.setOnClickListener(new OnClickListener() {
         //        @Override
         //        public void onClick(View v) {
         //            Intent intent = new Intent(MainActivity.this, AddItemActivity.class);
         //            startActivityForResult(intent, ADD_TODO_ITEM_REQUEST);
-
-
                     //może FOR RESULT? Implement OnClick().
         //        }
         //    });
-
             // - Attach the adapter to this ListActivity's ListView
           //  setListAdapter(mAdapter);
 
@@ -98,7 +88,6 @@ public class MainActivity extends Activity {
             listView.setAdapter(mAdapter);
 
             totalCostUpdate();
-
 
            //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
           // setSupportActionBar(toolbar);
@@ -137,8 +126,6 @@ public class MainActivity extends Activity {
                 }
             }
         }
-
-        // Do not modify below here
 
         @Override
         public void onResume() {

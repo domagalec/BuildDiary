@@ -146,7 +146,7 @@ public class ItemListAdapter extends BaseAdapter {
 
         //Display Category in a TextView
         final TextView categoryView = (TextView) itemLayout.findViewById(R.id.categoryView);
-        categoryView.setText(item.getCategory().toString());
+        categoryView.setText(item.getCategory());
 
         // Display Time and Date.
         // Hint - use ToDoItem.FORMAT.format(toDoItem.getDate()) to get date and

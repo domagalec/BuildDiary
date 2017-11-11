@@ -148,8 +148,7 @@ public class AddItemActivity extends Activity {
 
                 // Package ToDoItem data into an Intent
                 Intent data = new Intent();
-                Item.packageIntent(data, titleString, cost, /*status,*/ category,
-                        fullDate);
+                Item.packageIntent(data, titleString, cost, /*status,*/ fullDate, category);
 
                 // return data Intent and finish
 
@@ -241,7 +240,6 @@ public class AddItemActivity extends Activity {
         return mTitleText.getText().toString();
     }
 
-
     private String getCategory() {return mCategorySpinner.getSelectedItem().toString();}
 
     // DialogFragment used to pick a ToDoItem deadline date
@@ -270,7 +268,6 @@ public class AddItemActivity extends Activity {
 
             dateView.setText(dateString);
         }
-
     }
 
     // DialogFragment used to pick a ToDoItem deadline time
