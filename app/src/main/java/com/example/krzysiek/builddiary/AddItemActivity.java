@@ -16,7 +16,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
-import com.example.krzysiek.builddiary.Item.Status;
+//import com.example.krzysiek.builddiary.Item.Status;
 
 
 import java.util.Calendar;
@@ -135,7 +135,7 @@ public class AddItemActivity extends Activity {
                 Double cost = getCost();
 
                 // Get the current Status
-               Status status = getStatus();
+               //Status status = getStatus();
 
                 // Get the current ToDoItem Title
 
@@ -148,7 +148,7 @@ public class AddItemActivity extends Activity {
 
                 // Package ToDoItem data into an Intent
                 Intent data = new Intent();
-                Item.packageIntent(data, titleString, cost, status, category,
+                Item.packageIntent(data, titleString, cost, /*status,*/ category,
                         fullDate);
 
                 // return data Intent and finish
@@ -226,7 +226,7 @@ public class AddItemActivity extends Activity {
             }
         }*/
 
-    private Status getStatus() {
+    /*private Status getStatus() {
 
        // switch (mStatusRadioGroup.getCheckedRadioButtonId()) {
        //     case R.id.statusDone: {
@@ -235,7 +235,7 @@ public class AddItemActivity extends Activity {
         //    default: {
         //        return Status.NOTDONE;
         //    }
-        }
+        }*/
 
     private String getToDoTitle() {
         return mTitleText.getText().toString();

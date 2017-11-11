@@ -29,7 +29,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.Date;
 
-import com.example.krzysiek.builddiary.Item.Status;
+//import com.example.krzysiek.builddiary.Item.Status;
 
 
 public class MainActivity extends Activity {
@@ -203,16 +203,16 @@ public class MainActivity extends Activity {
 
                 String title = null;
                 String cost = null;
-                String status = null;
+                //String status = null;
                 Date date = null;
                 String category = null;
 
                 while (null != (title = reader.readLine())) {
                     cost = reader.readLine();
-                    status = reader.readLine();
+                    //status = reader.readLine();
                     date = Item.FORMAT.parse(reader.readLine());
                     category = reader.readLine();
-                    mAdapter.add(new Item(title, Double.valueOf(cost), Status.valueOf(status), date, category));
+                    mAdapter.add(new Item(title, Double.valueOf(cost) /*Status.valueOf(status)*/, date, category));
                 }
 
             } catch (FileNotFoundException e) {
@@ -232,7 +232,7 @@ public class MainActivity extends Activity {
             }
         }
 
-        // Save ToDoItems to file
+        // Save Items to file
         private void saveItems() {
             PrintWriter writer = null;
             try {

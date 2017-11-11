@@ -14,13 +14,13 @@ public class Item {
     public static final String ITEM_SEP = System.getProperty("line.separator");
 
 
-    public enum Status {
+    /*public enum Status {
         NOTDONE, DONE
-    };
+    };*/
 
     public final static String TITLE = "title";
     public final static String COST = "cost";
-    public final static String STATUS = "status";
+    //public final static String STATUS = "status";
     public final static String DATE = "date";
     public final static String CATEGORY = "category";
     public final static String FILENAME = "filename";
@@ -30,14 +30,14 @@ public class Item {
 
     private String mTitle = new String();
     private Double mCost = 0.0;
-    private Status mStatus = Status.NOTDONE;
+    //private Status mStatus = Status.NOTDONE;
     private Date mDate = new Date();
     private String mCategory = new String();
 
-    Item(String title, Double cost, Status status, Date date, String category) {
+    Item(String title, Double cost, /*Status status,*/ Date date, String category) {
         this.mTitle = title;
         this.mCost = cost;
-        this.mStatus = status;
+        //this.mStatus = status;
         this.mDate = date;
         this.mCategory = category;
     }
@@ -78,13 +78,13 @@ public class Item {
         mCost = cost;
     }
 
-    public Status getStatus() {
+   /* public Status getStatus() {
         return mStatus;
     }
 
     public void setStatus(Status status) {
         mStatus = status;
-    }
+    }*/
 
     public Date getDate() {
         return mDate;
@@ -98,7 +98,7 @@ public class Item {
     // package them for transport in an Intent
 
     public static void packageIntent(Intent intent, String title,
-                                     Double cost, Status status, String date, String category) {
+                                     Double cost, /*Status status,*/ String date, String category) {
 
         intent.putExtra(Item.TITLE, title);
         intent.putExtra(Item.COST, cost);
@@ -109,13 +109,13 @@ public class Item {
     }
 
     public String toString() {
-        return mTitle + ITEM_SEP + mCost + ITEM_SEP + mCategory + ITEM_SEP + mStatus + ITEM_SEP
+        return mTitle + ITEM_SEP + mCost + ITEM_SEP + mCategory + /*ITEM_SEP + mStatus +*/ ITEM_SEP
                 + FORMAT.format(mDate);
     }
 
     public String toLog() {
         return "Title:" + mTitle + ITEM_SEP + "Cost:" + mCost + ITEM_SEP + "Category:" + mCategory
-                + ITEM_SEP + "Status:" + mStatus + ITEM_SEP + "Date:"
+                + ITEM_SEP +/* "Status:" + mStatus + ITEM_SEP +*/ "Date:"
                 + FORMAT.format(mDate) + "\n";
     }
 
