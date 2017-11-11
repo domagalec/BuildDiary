@@ -54,6 +54,21 @@
             android:layout_marginLeft="5dp"
             android:layout_alignParentRight="true"
            />
+        <TextView
+            android:id="@+id/CategoryLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/DateLabel"
+            android:text="@string/item_category"/>
+
+        <TextView
+            android:id="@+id/categoryView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/CategoryLabel"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/CategoryLabel" />
 
     </RelativeLayout>
 

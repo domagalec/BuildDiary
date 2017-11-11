@@ -27,7 +27,6 @@ public class ItemListAdapter extends BaseAdapter {
     public ItemListAdapter(Context context) {
 
         mContext = context;
-
     }
 
     // Add a Item to the adapter
@@ -37,7 +36,6 @@ public class ItemListAdapter extends BaseAdapter {
 
         mItems.add(item);
         notifyDataSetChanged();
-
     }
 
     // Clears the list adapter of all items.
@@ -46,7 +44,6 @@ public class ItemListAdapter extends BaseAdapter {
 
         mItems.clear();
         notifyDataSetChanged();
-
     }
 
     // Returns the number of ToDoItems
@@ -55,7 +52,6 @@ public class ItemListAdapter extends BaseAdapter {
     public int getCount() {
 
         return mItems.size();
-
     }
 
     // Retrieve the number of ToDoItems
@@ -64,7 +60,6 @@ public class ItemListAdapter extends BaseAdapter {
     public Object getItem(int pos) {
 
         return mItems.get(pos);
-
     }
 
     // Get the ID for the ToDoItem
@@ -74,7 +69,6 @@ public class ItemListAdapter extends BaseAdapter {
     public long getItemId(int pos) {
 
         return pos;
-
     }
 
     // Create a View for the Item at specified position
@@ -120,20 +114,17 @@ public class ItemListAdapter extends BaseAdapter {
 		public void setDate(Date date) {	mDate = date;}
 		*/
 
-
-        // TODO - Display Title in TextView
+        // Display Title in TextView
         final TextView titleView = (TextView) itemLayout.findViewById(R.id.titleView);
         titleView.setText(item.getTitle().toString());
 
-
-        // TODO - Set up Status CheckBox
+        //Set up Status CheckBox
         /*final CheckBox statusView = (CheckBox) itemLayout.findViewById(R.id.statusCheckBox);
         if (item.getStatus()== Item.Status.DONE) {
             statusView.setChecked(true);
         }*/
 
-
-        // TODO - Must also set up an OnCheckedChangeListener,
+        // Must also set up an OnCheckedChangeListener,
         // which is called when the user toggles the status checkbox
 
         /*statusView.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -146,16 +137,18 @@ public class ItemListAdapter extends BaseAdapter {
                 else{
                     Item.setStatus(Item.Status.DONE);
                 }
-
-
             }
         });*/
 
-        // TODO - Display Cost in a TextView
+        // Display Cost in a TextView
         final TextView costView = (TextView) itemLayout.findViewById(R.id.costView);
         costView.setText(new DecimalFormat("##.00").format(item.getCost()));
 
-        // TODO - Display Time and Date.
+        //Display Category in a TextView
+        final TextView categoryView = (TextView) itemLayout.findViewById(R.id.categoryView);
+        categoryView.setText(item.getCategory().toString());
+
+        // Display Time and Date.
         // Hint - use ToDoItem.FORMAT.format(toDoItem.getDate()) to get date and
         // time String
         final TextView dateView = (TextView) itemLayout.findViewById(R.id.dateView);

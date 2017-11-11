@@ -32,12 +32,14 @@ public class Item {
     private Double mCost = 0.0;
     private Status mStatus = Status.NOTDONE;
     private Date mDate = new Date();
+    private String mCategory = new String();
 
-    Item(String title, Double cost, Status status, Date date) {
+    Item(String title, Double cost, Status status, Date date, String category) {
         this.mTitle = title;
         this.mCost = cost;
         this.mStatus = status;
         this.mDate = date;
+        this.mCategory = category;
     }
 
     // Create a new Item from data packaged in an Intent
@@ -46,6 +48,7 @@ public class Item {
 
         mTitle = intent.getStringExtra(Item.TITLE);
         mCost = intent.getDoubleExtra(Item.COST, 0.0);
+        mCategory = intent.getStringExtra(Item.CATEGORY);
 //        mStatus = Status.valueOf(intent.getStringExtra(Item.STATUS));
 
         try {
@@ -66,6 +69,10 @@ public class Item {
     public Double getCost() {
         return mCost;
     }
+
+    public String getCategory() {return mCategory;}
+
+    public void setCategory(String category) {mCategory = category;}
 
     public void setCost(Double cost) {
         mCost = cost;
@@ -91,22 +98,23 @@ public class Item {
     // package them for transport in an Intent
 
     public static void packageIntent(Intent intent, String title,
-                                     Double cost, Status status, String date) {
+                                     Double cost, Status status, String date, String category) {
 
         intent.putExtra(Item.TITLE, title);
         intent.putExtra(Item.COST, cost);
        // intent.putExtra(Item.STATUS, status.toString());
         intent.putExtra(Item.DATE, date);
+        intent.putExtra(Item.CATEGORY, category);
 
     }
 
     public String toString() {
-        return mTitle + ITEM_SEP + mCost + ITEM_SEP + mStatus + ITEM_SEP
+        return mTitle + ITEM_SEP + mCost + ITEM_SEP + mCategory + ITEM_SEP + mStatus + ITEM_SEP
                 + FORMAT.format(mDate);
     }
 
     public String toLog() {
-        return "Title:" + mTitle + ITEM_SEP + "Priority:" + mCost
+        return "Title:" + mTitle + ITEM_SEP + "Cost:" + mCost + ITEM_SEP + "Category:" + mCategory
                 + ITEM_SEP + "Status:" + mStatus + ITEM_SEP + "Date:"
                 + FORMAT.format(mDate) + "\n";
     }

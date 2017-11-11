@@ -59,7 +59,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <Spinner
-        android:id="@+id/category"
+        android:id="@+id/category_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -70,7 +70,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/category"
+        android:layout_below="@id/category_spinner"
         android:layout_marginTop="14dp"
         android:text="@string/item_date"
         android:textAppearance="?android:attr/textAppearanceLarge" />

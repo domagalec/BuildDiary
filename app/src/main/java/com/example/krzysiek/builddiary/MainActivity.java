@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 
@@ -45,6 +46,7 @@ public class MainActivity extends Activity {
         TextView summaryView;
         ListView listView;
         Button addButton;
+
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -101,7 +103,6 @@ public class MainActivity extends Activity {
            //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
           // setSupportActionBar(toolbar);
 
-
             addButton = (Button) findViewById(R.id.addbutton);
             addButton.setOnClickListener(new OnClickListener() {
                 @Override
@@ -147,7 +148,7 @@ public class MainActivity extends Activity {
 
             if (mAdapter.getCount() == 0)
                 loadItems();
-            totalCostUpdate();
+                totalCostUpdate();
 
         }
 
@@ -193,7 +194,7 @@ public class MainActivity extends Activity {
 
         }
 
-        // Load stored ToDoItems
+        // Load stored Items
         private void loadItems() {
             BufferedReader reader = null;
             try {
@@ -204,12 +205,14 @@ public class MainActivity extends Activity {
                 String cost = null;
                 String status = null;
                 Date date = null;
+                String category = null;
 
                 while (null != (title = reader.readLine())) {
                     cost = reader.readLine();
                     status = reader.readLine();
                     date = Item.FORMAT.parse(reader.readLine());
-                    mAdapter.add(new Item(title, Double.valueOf(cost), Status.valueOf(status), date));
+                    category = reader.readLine();
+                    mAdapter.add(new Item(title, Double.valueOf(cost), Status.valueOf(status), date, category));
                 }
 
             } catch (FileNotFoundException e) {

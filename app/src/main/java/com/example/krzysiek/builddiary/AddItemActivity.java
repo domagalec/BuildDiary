@@ -7,11 +7,13 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 import com.example.krzysiek.builddiary.Item.Status;
@@ -36,6 +38,8 @@ public class AddItemActivity extends Activity {
     private EditText mCost;
     private RadioButton mDefaultStatusButton;
     private RadioButton mDefaultPriorityButton;
+    private Spinner mCategorySpinner;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,15 @@ public class AddItemActivity extends Activity {
 
         mTitleText = (EditText) findViewById(R.id.title);
         mCost = (EditText) findViewById(R.id.cost);
+        mCategorySpinner = (Spinner) findViewById(R.id.category_spinner);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.category_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        mCategorySpinner.setAdapter(adapter);
+
         //mDefaultStatusButton = (RadioButton) findViewById(R.id.statusNotDone);
         //mDefaultPriorityButton = (RadioButton) findViewById(R.id.medPriority);
         //mPriorityRadioGroup = (RadioGroup) findViewById(R.id.priorityGroup);
@@ -97,13 +110,11 @@ public class AddItemActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-
                 // Reset data to default values
               //  mPriorityRadioGroup.check(R.id.medPriority);
                // mStatusRadioGroup.check(R.id.statusNotDone);
                 mTitleText.setText(null);
                 mCost.setText(null);
-
 
                 // reset date and time
                 setDefaultDateTime();
@@ -118,9 +129,7 @@ public class AddItemActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-
-                // gather ToDoItem data
-
+                // gather Item data
 
                 // Get the current cost
                 Double cost = getCost();
@@ -130,16 +139,16 @@ public class AddItemActivity extends Activity {
 
                 // Get the current ToDoItem Title
 
-
                 String titleString = getToDoTitle();
 
+                String category = getCategory();
 
                 // Construct the Date string
                 String fullDate = dateString;
 
                 // Package ToDoItem data into an Intent
                 Intent data = new Intent();
-                Item.packageIntent(data, titleString, cost, status,
+                Item.packageIntent(data, titleString, cost, status, category,
                         fullDate);
 
                 // return data Intent and finish
@@ -232,6 +241,8 @@ public class AddItemActivity extends Activity {
         return mTitleText.getText().toString();
     }
 
+
+    private String getCategory() {return mCategorySpinner.getSelectedItem().toString();}
 
     // DialogFragment used to pick a ToDoItem deadline date
 

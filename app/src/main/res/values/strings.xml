@@ -5,11 +5,25 @@
     <string name="cancel">Cancel</string>
     <string name="create_alert_title">New project</string>
     <string name="item_name">Name</string>
-    <string name="item_category">Choose category</string>
+    <string name="item_category">Category</string>
     <string name="item_date">Date</string>
     <string name="item_cost">Cost</string>
     <string name="item_add">Add</string>
     <string name="reset">Reset</string>
     <string name="total_cost">Total cost</string>
+
+    <string-array name="category_array">
+        <item><string name="formalities">Formalities</string></item>
+        <item><string name="lot">Lot</string></item>
+        <item><string name="foundations">Foundations</string></item>
+        <item><string name="walls">Walls</string></item>
+        <item><string name="roof">Roof</string></item>
+        <item><string name="doors_windows">Doors and windows</string></item>
+        <item><string name="installations">Installations</string></item>
+        <item><string name="finish">Finish</string></item>
+        <item><string name="elevation">Elevation</string></item>
+        <item><string name="furnishing">Furnishing</string></item>
+        <item><string name="garden">Garden</string></item>
+    </string-array>
 
 </resources>
