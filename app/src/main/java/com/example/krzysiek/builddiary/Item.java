@@ -51,6 +51,8 @@ public class Item {
         mCategory = intent.getStringExtra(Item.CATEGORY);
 //        mStatus = Status.valueOf(intent.getStringExtra(Item.STATUS));
 
+        //mStatus = Status.valueOf(intent.getStringExtra(Item.STATUS));
+
         try {
             mDate = Item.FORMAT.parse(intent.getStringExtra(Item.DATE));
         } catch (ParseException e) {
@@ -102,7 +104,7 @@ public class Item {
 
         intent.putExtra(Item.TITLE, title);
         intent.putExtra(Item.COST, cost);
-       // intent.putExtra(Item.STATUS, status.toString());
+        //intent.putExtra(Item.STATUS, status.toString());
         intent.putExtra(Item.DATE, date);
         intent.putExtra(Item.CATEGORY, category);
 
