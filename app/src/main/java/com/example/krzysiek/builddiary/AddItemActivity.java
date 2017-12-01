@@ -64,7 +64,7 @@ public class AddItemActivity extends Activity {
         dateView = (TextView) findViewById(R.id.date);
         timeView = (TextView) findViewById(R.id.time);
 
-        // Set the default date and time
+        // Set the date and time
 
         setDefaultDateTime();
 
