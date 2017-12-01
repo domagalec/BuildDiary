@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
@@ -97,26 +96,9 @@ public class ItemListAdapter extends BaseAdapter {
         // corresponds to the user interface elements defined
         // in the layout file
 
-		/*public String getTitle() {return mTitle;	}
-
-		public void setTitle(String title) {	mTitle = title;}
-
-		public Priority getPriority() {	return mPriority;}
-
-		public void setPriority(Priority priority) {	mPriority = priority;}
-
-		public Status getStatus() {	return mStatus;}
-
-		public void setStatus(Status status) {	mStatus = status;}
-
-		public Date getDate() {	return mDate;}
-
-		public void setDate(Date date) {	mDate = date;}
-		*/
-
         // Display Title in TextView
         final TextView titleView = (TextView) itemLayout.findViewById(R.id.titleView);
-        titleView.setText(item.getTitle().toString());
+        titleView.setText(item.getTitle());
 
         //Set up Status CheckBox
         /*final CheckBox statusView = (CheckBox) itemLayout.findViewById(R.id.statusCheckBox);

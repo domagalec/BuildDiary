@@ -19,6 +19,8 @@ import android.view.View.OnClickListener;
 //import com.example.krzysiek.builddiary.Item.Status;
 
 
+import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -26,18 +28,12 @@ public class EditItemActivity extends Activity {
 
     private static final String TAG = "BuildDiary";
 
-    private static String timeString;
     private static String dateString;
     private static TextView dateView;
-    private static TextView timeView;
 
     private Date mDate;
-    private RadioGroup mPriorityRadioGroup;
-    private RadioGroup mStatusRadioGroup;
     private EditText mTitleText;
     private EditText mCost;
-    private RadioButton mDefaultStatusButton;
-    private RadioButton mDefaultPriorityButton;
     private Spinner mCategorySpinner;
 
 
@@ -51,10 +47,14 @@ public class EditItemActivity extends Activity {
         Double cost = i.getDoubleExtra("cost", 0);
         String category = i.getStringExtra("category");
 
+        Date date = (Date)i.getSerializableExtra("date");
+
         mTitleText = (EditText) findViewById(R.id.title);
         mTitleText.setText(i.getStringExtra("title"));
+       // mTitleText.setText(Item.FORMAT.format(date));
+
         mCost = (EditText) findViewById(R.id.cost);
-        mCost.setText(String.valueOf(cost));
+        mCost.setText(new DecimalFormat("##.00").format(cost));
         mCategorySpinner = (Spinner) findViewById(R.id.category_spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -65,20 +65,15 @@ public class EditItemActivity extends Activity {
         mCategorySpinner.setAdapter(adapter);
 
         mCategorySpinner.setSelection(getIndex(mCategorySpinner, category));
-
           //  int spinnerPosition = adapter.getPosition(category);
           //  mCategorySpinner.setSelection(spinnerPosition);
 
-        //mDefaultStatusButton = (RadioButton) findViewById(R.id.statusNotDone);
-        //mDefaultPriorityButton = (RadioButton) findViewById(R.id.medPriority);
-        //mPriorityRadioGroup = (RadioGroup) findViewById(R.id.priorityGroup);
-        //mStatusRadioGroup = (RadioGroup) findViewById(R.id.statusGroup);
         dateView = (TextView) findViewById(R.id.date);
-        timeView = (TextView) findViewById(R.id.time);
+        dateView.setText(Item.FORMAT.format(date));
 
-        // Set the default date and time
+        // Set the date and time
 
-        setDefaultDateTime();
+        //setEditDateTime();
 
         // OnClickListener for the Date button, calls showDatePickerDialog() to
         // show the Date dialog
@@ -164,7 +159,7 @@ public class EditItemActivity extends Activity {
 
     private void setDefaultDateTime() {
 
-        // Default is current time + 7 days
+        // Default is current time
         mDate = new Date();
         mDate = new Date(mDate.getTime());
 
@@ -181,6 +176,26 @@ public class EditItemActivity extends Activity {
 
         //timeView.setText(timeString);
     }
+
+    /*private void setEditDateTime() {
+
+        // Default is current time
+        mDate = new Date();
+        mDate = new Date(mDate.getTime());
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(mDate);
+
+        setDateString(c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.MONTH),
+                c.get(Calendar.YEAR));
+
+        dateView.setText(dateString);
+
+        //setTimeString(c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE),
+        //        c.get(Calendar.MILLISECOND));
+
+        //timeView.setText(timeString);
+    }*/
 
     private static void setDateString(int dayOfMonth, int monthOfYear, int year) {
 
@@ -270,35 +285,10 @@ public class EditItemActivity extends Activity {
         }
     }
 
-    // DialogFragment used to pick a ToDoItem deadline time
-
-    /* public static class TimePickerFragment extends DialogFragment implements
-             TimePickerDialog.OnTimeSetListener {
-
-         @Override
-         public Dialog onCreateDialog(Bundle savedInstanceState) {
-
-             // Use the current time as the default values for the picker
-             final Calendar c = Calendar.getInstance();
-             int hour = c.get(Calendar.HOUR_OF_DAY);
-             int minute = c.get(Calendar.MINUTE);
-
-             // Create a new instance of TimePickerDialog and return
-             return new TimePickerDialog(getActivity(), this, hour, minute, true);
-         }
-
-         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-             setTimeString(hourOfDay, minute, 0);
-
-             timeView.setText(timeString);
-         }
-     }
- */
     private void showDatePickerDialog() {
         DialogFragment newFragment = new DatePickerFragment();
         newFragment.show(getFragmentManager(), "datePicker");
     }
-
 
     private int getIndex(Spinner spinner, String myString)
     {
@@ -313,8 +303,4 @@ public class EditItemActivity extends Activity {
         return index;
     }
 
- /*   private void showTimePickerDialog() {
-        DialogFragment newFragment = new TimePickerFragment();
-        newFragment.show(getFragmentManager(), "timePicker");
-    }*/
 }

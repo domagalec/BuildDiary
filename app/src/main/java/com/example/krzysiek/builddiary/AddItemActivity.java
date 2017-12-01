@@ -164,7 +164,7 @@ public class AddItemActivity extends Activity {
 
     private void setDefaultDateTime() {
 
-        // Default is current time + 7 days
+        // Default is current time
         mDate = new Date();
         mDate = new Date(mDate.getTime());
 

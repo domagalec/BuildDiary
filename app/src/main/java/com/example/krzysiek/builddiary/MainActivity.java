@@ -113,7 +113,7 @@ public class MainActivity extends Activity {
 
                     Item editedItem = (Item) adapterView.getItemAtPosition(position);
 
-                    Toast.makeText(getApplicationContext(), "selected Item Name is " + editedItem.getTitle(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(), "selected Item Name is " + editedItem.getTitle(), Toast.LENGTH_LONG).show();
 
                     intent.putExtra("position", position);
                     intent.putExtra("title", editedItem.getTitle());
