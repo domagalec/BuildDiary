@@ -22,7 +22,7 @@ import android.view.View.OnClickListener;
 import java.util.Calendar;
 import java.util.Date;
 
-public class AddItemActivity extends Activity {
+public class EditItemActivity extends Activity {
 
     private static final String TAG = "BuildDiary";
 
@@ -46,8 +46,15 @@ public class AddItemActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_item);
 
+        Intent i = getIntent();
+        int position = i.getIntExtra("position", 0);
+        Double cost = i.getDoubleExtra("cost", 0);
+        String category = i.getStringExtra("category");
+
         mTitleText = (EditText) findViewById(R.id.title);
+        mTitleText.setText(i.getStringExtra("title"));
         mCost = (EditText) findViewById(R.id.cost);
+        mCost.setText(String.valueOf(cost));
         mCategorySpinner = (Spinner) findViewById(R.id.category_spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -56,6 +63,11 @@ public class AddItemActivity extends Activity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         mCategorySpinner.setAdapter(adapter);
+
+        mCategorySpinner.setSelection(getIndex(mCategorySpinner, category));
+
+          //  int spinnerPosition = adapter.getPosition(category);
+          //  mCategorySpinner.setSelection(spinnerPosition);
 
         //mDefaultStatusButton = (RadioButton) findViewById(R.id.statusNotDone);
         //mDefaultPriorityButton = (RadioButton) findViewById(R.id.medPriority);
@@ -80,18 +92,6 @@ public class AddItemActivity extends Activity {
             }
         });
 
-        // OnClickListener for the Time button, calls showTimePickerDialog() to
-        // show the Time Dialog
-
-      /*  final Button timePickerButton = (Button) findViewById(R.id.time_picker_button);
-        timePickerButton.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                showTimePickerDialog();
-            }
-        });*/
-
         // OnClickListener for the Cancel Button,
 
         final Button cancelButton = (Button) findViewById(R.id.cancelButton);
@@ -111,8 +111,8 @@ public class AddItemActivity extends Activity {
             public void onClick(View v) {
 
                 // Reset data to default values
-              //  mPriorityRadioGroup.check(R.id.medPriority);
-               // mStatusRadioGroup.check(R.id.statusNotDone);
+                //  mPriorityRadioGroup.check(R.id.medPriority);
+                // mStatusRadioGroup.check(R.id.statusNotDone);
                 mTitleText.setText(null);
                 mCost.setText(null);
 
@@ -135,9 +135,9 @@ public class AddItemActivity extends Activity {
                 Double cost = getCost();
 
                 // Get the current Status
-               //Status status = getStatus();
+                //Status status = getStatus();
 
-                // Get the current Item Title
+                // Get the current ToDoItem Title
 
                 String titleString = getToDoTitle();
 
@@ -146,7 +146,7 @@ public class AddItemActivity extends Activity {
                 // Construct the Date string
                 String fullDate = dateString;
 
-                // Package Item data into an Intent
+                // Package ToDoItem data into an Intent
                 Intent data = new Intent();
                 Item.packageIntent(data, titleString, cost, /*status,*/ fullDate, category);
 
@@ -272,31 +272,45 @@ public class AddItemActivity extends Activity {
 
     // DialogFragment used to pick a ToDoItem deadline time
 
-   /* public static class TimePickerFragment extends DialogFragment implements
-            TimePickerDialog.OnTimeSetListener {
+    /* public static class TimePickerFragment extends DialogFragment implements
+             TimePickerDialog.OnTimeSetListener {
 
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
+         @Override
+         public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-            // Use the current time as the default values for the picker
-            final Calendar c = Calendar.getInstance();
-            int hour = c.get(Calendar.HOUR_OF_DAY);
-            int minute = c.get(Calendar.MINUTE);
+             // Use the current time as the default values for the picker
+             final Calendar c = Calendar.getInstance();
+             int hour = c.get(Calendar.HOUR_OF_DAY);
+             int minute = c.get(Calendar.MINUTE);
 
-            // Create a new instance of TimePickerDialog and return
-            return new TimePickerDialog(getActivity(), this, hour, minute, true);
-        }
+             // Create a new instance of TimePickerDialog and return
+             return new TimePickerDialog(getActivity(), this, hour, minute, true);
+         }
 
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            setTimeString(hourOfDay, minute, 0);
+         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+             setTimeString(hourOfDay, minute, 0);
 
-            timeView.setText(timeString);
-        }
-    }
-*/
+             timeView.setText(timeString);
+         }
+     }
+ */
     private void showDatePickerDialog() {
         DialogFragment newFragment = new DatePickerFragment();
         newFragment.show(getFragmentManager(), "datePicker");
+    }
+
+
+    private int getIndex(Spinner spinner, String myString)
+    {
+        int index = 0;
+
+        for (int i=0;i<spinner.getCount();i++){
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(myString)){
+                index = i;
+                break;
+            }
+        }
+        return index;
     }
 
  /*   private void showTimePickerDialog() {

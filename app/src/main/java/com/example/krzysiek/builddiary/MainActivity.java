@@ -3,18 +3,21 @@ package com.example.krzysiek.builddiary;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -33,7 +36,8 @@ import java.util.Date;
 
 public class MainActivity extends Activity {
 
-        private static final int ADD_TODO_ITEM_REQUEST = 0;
+        private static final int ADD_ITEM_REQUEST = 0;
+        private static final int EDIT_ITEM_REQUEST = 0;
         private static final String FILE_NAME = "BuilderDiaryData.txt";
         private static final String TAG = "BuilderDiary";
 
@@ -97,9 +101,30 @@ public class MainActivity extends Activity {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(MainActivity.this, AddItemActivity.class);
-                    startActivityForResult(intent, ADD_TODO_ITEM_REQUEST);
+                    startActivityForResult(intent, ADD_ITEM_REQUEST);
                 }
             });
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                   // Cursor cursor = (Cursor)adapterView.getItemAtPosition(position);
+                    Intent intent = new Intent(MainActivity.this, EditItemActivity.class);
+
+                    Item editedItem = (Item) adapterView.getItemAtPosition(position);
+
+                    Toast.makeText(getApplicationContext(), "selected Item Name is " + editedItem.getTitle(), Toast.LENGTH_LONG).show();
+
+                    intent.putExtra("position", position);
+                    intent.putExtra("title", editedItem.getTitle());
+                    intent.putExtra("cost", editedItem.getCost());
+                    intent.putExtra("date", editedItem.getDate());
+                    intent.putExtra("category", editedItem.getCategory());
+
+                    startActivityForResult(intent, EDIT_ITEM_REQUEST);
+                }
+            });
+
         }
 
         @Override
@@ -111,7 +136,7 @@ public class MainActivity extends Activity {
             // if user submitted a new ToDoItem
             // Create a new ToDoItem from the data Intent
             // and then add it to the adapter
-            if (requestCode == ADD_TODO_ITEM_REQUEST) {
+            if (requestCode == ADD_ITEM_REQUEST) {
                 // Make sure the request was successful
                 if (resultCode == RESULT_OK) {
 
@@ -131,7 +156,7 @@ public class MainActivity extends Activity {
         public void onResume() {
             super.onResume();
 
-            // Load saved ToDoItems, if necessary
+            // Load saved Items, if necessary
 
             if (mAdapter.getCount() == 0)
                 loadItems();
@@ -139,15 +164,33 @@ public class MainActivity extends Activity {
 
         }
 
+
         @Override
-        protected void onPause() {
-            super.onPause();
+        public void onStart() {
+        super.onStart();
 
-            // Save ToDoItems
+        // Load saved Items, if necessary
 
-            saveItems();
+        if (mAdapter.getCount() == 0)
+            loadItems();
+            totalCostUpdate();
+    }
 
-        }
+        @Override
+        protected void onStop() {
+        super.onStop();
+
+        // Save Items
+        saveItems();
+    }
+
+        @Override
+        protected void onDestroy() {
+        super.onDestroy();
+
+        // Save Items
+        saveItems();
+    }
 
         @Override
         public boolean onCreateOptionsMenu(Menu menu) {

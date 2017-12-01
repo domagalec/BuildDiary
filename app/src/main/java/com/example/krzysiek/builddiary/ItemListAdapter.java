@@ -46,7 +46,7 @@ public class ItemListAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    // Returns the number of ToDoItems
+    // Returns the number of Items
 
     @Override
     public int getCount() {
@@ -54,7 +54,7 @@ public class ItemListAdapter extends BaseAdapter {
         return mItems.size();
     }
 
-    // Retrieve the number of ToDoItems
+    // Retrieve the number of Items
 
     @Override
     public Object getItem(int pos) {

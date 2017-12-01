@@ -111,8 +111,8 @@ public class Item {
     }
 
     public String toString() {
-        return mTitle + ITEM_SEP + mCost + ITEM_SEP + mCategory + /*ITEM_SEP + mStatus +*/ ITEM_SEP
-                + FORMAT.format(mDate);
+        return mTitle + ITEM_SEP + mCost + /*ITEM_SEP + mStatus +*/ ITEM_SEP
+                + FORMAT.format(mDate) + ITEM_SEP + mCategory;
     }
 
     public String toLog() {
