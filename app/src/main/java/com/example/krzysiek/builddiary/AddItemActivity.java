@@ -148,7 +148,7 @@ public class AddItemActivity extends Activity {
 
                 // Package Item data into an Intent
                 Intent data = new Intent();
-                Item.packageIntent(data, titleString, cost, /*status,*/ fullDate, category);
+                Item.packageIntent(data, titleString, cost, fullDate, category);
 
                 // return data Intent and finish
 

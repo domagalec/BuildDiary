@@ -6,13 +6,17 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListPopupWindow;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -36,8 +40,8 @@ import java.util.Date;
 
 public class MainActivity extends Activity {
 
-        private static final int ADD_ITEM_REQUEST = 0;
-        private static final int EDIT_ITEM_REQUEST = 0;
+        private static final int ADD_ITEM_REQUEST = 1;
+        private static final int EDIT_ITEM_REQUEST = 2;
         private static final String FILE_NAME = "BuilderDiaryData.txt";
         private static final String TAG = "BuilderDiary";
 
@@ -90,6 +94,7 @@ public class MainActivity extends Activity {
             summaryView = (TextView) findViewById(R.id.summaryView);
             listView = (ListView) findViewById(R.id.listView);
             listView.setAdapter(mAdapter);
+            registerForContextMenu(listView);
 
             totalCostUpdate();
 
@@ -101,7 +106,7 @@ public class MainActivity extends Activity {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(MainActivity.this, AddItemActivity.class);
-                    startActivityForResult(intent, ADD_ITEM_REQUEST);
+                    startActivityForResult(intent, 1);
                 }
             });
 
@@ -121,32 +126,81 @@ public class MainActivity extends Activity {
                     intent.putExtra("date", editedItem.getDate());
                     intent.putExtra("category", editedItem.getCategory());
 
-                    startActivityForResult(intent, EDIT_ITEM_REQUEST);
+                    startActivityForResult(intent, 2);
                 }
             });
 
+            /*listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                    return true;
+
+                }
+
+            });*/
+
         }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu,View v, ContextMenu.ContextMenuInfo menuInfo){
+        if (v.getId() == R.id.listView){
+            AdapterView.AdapterContextMenuInfo info =(AdapterView.AdapterContextMenuInfo)menuInfo;
+            MenuItem mnu1=menu.add(0,0,0,R.string.menu_edit);
+            MenuItem mnu2=menu.add(0,1,1,R.string.menu_delete);
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem menuItem){
+        AdapterView.AdapterContextMenuInfo info=(AdapterView.AdapterContextMenuInfo)menuItem.getMenuInfo();
+        switch (menuItem.getItemId()) {
+            case 0:
+                Toast.makeText(this, "Delete Selected", Toast.LENGTH_LONG).show();
+                break;
+            case 1:
+                Toast.makeText(this, "Share Selected", Toast.LENGTH_LONG).show();
+                break;
+
+            default:
+                break;
+        }
+        return true;
+    }
+
 
         @Override
         protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-            Log.i(TAG,"Entered onActivityResult()");
+            Log.i(TAG, "Entered onActivityResult()");
 
             // Check result code and request code
             // if user submitted a new ToDoItem
             // Create a new ToDoItem from the data Intent
-            // and then add it to the adapter
-            if (requestCode == ADD_ITEM_REQUEST) {
-                // Make sure the request was successful
-                if (resultCode == RESULT_OK) {
+            // and then add it to the adapteR
+            if (resultCode == RESULT_OK) {
+                if (requestCode == 1) {
+                    // Make sure the request was successful
+                    //if (resultCode == RESULT_OK) {
 
                     Item newItem = new Item(data);
                     mAdapter.add(newItem);
+                    Log.i(TAG, "Added new item");
                     // The user picked a contact.
                     // The Intent's data Uri identifies which contact was selected.
                     //String result=data.getStringExtra("zwrot");
                     //mUserTextView.setText(result);
                     // Do something with the contact here (bigger example below)
+                    totalCostUpdate();
+                }
+                else if (requestCode == 2) {
+                    //if (resultCode == RESULT_OK){
+                    int position = 0;
+                    Item editedItem = new Item(data);
+                    position = data.getIntExtra("position", 0);
+                    mAdapter.edit(editedItem, position);
+
+                    Log.i(TAG, "Edited item");
                     totalCostUpdate();
                 }
             }
@@ -206,6 +260,7 @@ public class MainActivity extends Activity {
             switch (item.getItemId()) {
                 case MENU_DELETE:
                     mAdapter.clear();
+                    totalCostUpdate();
                     return true;
                 case MENU_DUMP:
                     dump();

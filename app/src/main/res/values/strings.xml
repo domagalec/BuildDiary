@@ -11,6 +11,9 @@
     <string name="item_add">Add</string>
     <string name="reset">Reset</string>
     <string name="total_cost">Total cost</string>
+    <string name="delete">Delete</string>
+    <string name="menu_edit">Edit</string>
+    <string name="menu_delete">Delete</string>
 
     <string-array name="category_array">
         <item><string name="formalities">Formalities</string></item>

@@ -26,4 +26,7 @@
         <item><string name="furnishing">Wyposażenie</string></item>
         <item><string name="garden">Ogród</string></item>
     </string-array>
+    <string name="delete">Usuń</string>
+    <string name="menu_edit">Edytuj</string>
+    <string name="menu_delete">Usuń</string>
 </resources>

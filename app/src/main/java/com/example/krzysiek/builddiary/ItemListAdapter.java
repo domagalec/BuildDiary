@@ -35,6 +35,19 @@ public class ItemListAdapter extends BaseAdapter {
 
         mItems.add(item);
         notifyDataSetChanged();
+        Log.i(TAG, "Add item from ItemListAdapter");
+    }
+
+    public void edit(Item item, int position){
+        mItems.set(position, item);
+        notifyDataSetChanged();
+        Log.i(TAG, "Edit item from ItemListAdapter");
+
+    }
+
+    public void remove(Item item){
+        mItems.remove(item);
+        notifyDataSetChanged();
     }
 
     // Clears the list adapter of all items.
@@ -82,7 +95,7 @@ public class ItemListAdapter extends BaseAdapter {
         // Get the current Item
         final Item item = (Item) getItem(position);
 
-        // Inflate the View for this ToDoItem
+        // Inflate the View for this Item
         // from todo_item.xml
         LayoutInflater mInflater = LayoutInflater.from(mContext); // context pass to the constructor of adapter
         convertView = mInflater.inflate(R.layout.item_view, parent, false);

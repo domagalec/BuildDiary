@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -43,11 +44,13 @@ public class EditItemActivity extends Activity {
         setContentView(R.layout.new_item);
 
         Intent i = getIntent();
-        int position = i.getIntExtra("position", 0);
+        final int position = i.getIntExtra("position", 0);
         Double cost = i.getDoubleExtra("cost", 0);
         String category = i.getStringExtra("category");
-
+        dateString = i.getStringExtra("date");
+        Log.i(TAG, "dateString: " + dateString);
         Date date = (Date)i.getSerializableExtra("date");
+        Log.i(TAG, "date: " + date.toString());
 
         mTitleText = (EditText) findViewById(R.id.title);
         mTitleText.setText(i.getStringExtra("title"));
@@ -73,7 +76,7 @@ public class EditItemActivity extends Activity {
 
         // Set the date and time
 
-        //setEditDateTime();
+        setNoChangeDate(date);
 
         // OnClickListener for the Date button, calls showDatePickerDialog() to
         // show the Date dialog
@@ -113,7 +116,6 @@ public class EditItemActivity extends Activity {
 
                 // reset date and time
                 setDefaultDateTime();
-
             }
         });
 
@@ -132,7 +134,7 @@ public class EditItemActivity extends Activity {
                 // Get the current Status
                 //Status status = getStatus();
 
-                // Get the current ToDoItem Title
+                // Get the current Item Title
 
                 String titleString = getToDoTitle();
 
@@ -141,21 +143,34 @@ public class EditItemActivity extends Activity {
                 // Construct the Date string
                 String fullDate = dateString;
 
-                // Package ToDoItem data into an Intent
-                Intent data = new Intent();
-                Item.packageIntent(data, titleString, cost, /*status,*/ fullDate, category);
+                // Package Item data into an Intent
+                Intent editedData = new Intent();
+                Item.packageIntent(editedData, titleString, cost, fullDate, category);
 
+                editedData.putExtra("position", position);
                 // return data Intent and finish
 
-                setResult(RESULT_OK, data);
+                setResult(RESULT_OK, editedData);
                 finish();
-
-
             }
         });
     }
 
     // Do not modify below this point.
+
+    private void setNoChangeDate(Date date) {
+        mDate = new Date();
+        mDate = date;
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+
+        setDateString(day,month,year);
+        dateView.setText(dateString);
+    }
 
     private void setDefaultDateTime() {
 
