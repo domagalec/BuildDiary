@@ -45,8 +45,8 @@ public class ItemListAdapter extends BaseAdapter {
 
     }
 
-    public void remove(Item item){
-        mItems.remove(item);
+    public void remove(int position){
+        mItems.remove(position);
         notifyDataSetChanged();
     }
 

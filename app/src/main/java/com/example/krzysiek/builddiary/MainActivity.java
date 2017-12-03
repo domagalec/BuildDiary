@@ -154,12 +154,27 @@ public class MainActivity extends Activity {
     @Override
     public boolean onContextItemSelected(MenuItem menuItem){
         AdapterView.AdapterContextMenuInfo info=(AdapterView.AdapterContextMenuInfo)menuItem.getMenuInfo();
+        int position = ((AdapterView.AdapterContextMenuInfo)info).position;
+
         switch (menuItem.getItemId()) {
             case 0:
-                Toast.makeText(this, "Delete Selected", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(MainActivity.this, EditItemActivity.class);
+                Item editedItem = (Item) listView.getItemAtPosition(position);
+
+                //Toast.makeText(getApplicationContext(), "selected Item Name is " + editedItem.getTitle(), Toast.LENGTH_LONG).show();
+
+                intent.putExtra("position", position);
+                intent.putExtra("title", editedItem.getTitle());
+                intent.putExtra("cost", editedItem.getCost());
+                intent.putExtra("date", editedItem.getDate());
+                intent.putExtra("category", editedItem.getCategory());
+
+                startActivityForResult(intent, 2);
                 break;
             case 1:
-                Toast.makeText(this, "Share Selected", Toast.LENGTH_LONG).show();
+                mAdapter.remove(position);
+                totalCostUpdate();
+                Toast.makeText(this, "Item deleted", Toast.LENGTH_LONG).show();
                 break;
 
             default:
@@ -344,7 +359,12 @@ public class MainActivity extends Activity {
             for (int i = 0; i < mAdapter.getCount(); i++) {
                 total = total+((Item) mAdapter.getItem(i)).getCost();
             }
-            summaryView.setText(new DecimalFormat("##.00").format(total));
+            if (total == 0){
+                summaryView.setText(new DecimalFormat("0.00").format(total));
+            }
+            else {
+                summaryView.setText(new DecimalFormat("##.00").format(total));
+            }
            // String.valueOf(total)
         }
     }
