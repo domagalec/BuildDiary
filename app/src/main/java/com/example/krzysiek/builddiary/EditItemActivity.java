@@ -17,6 +17,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
+import android.widget.Toast;
 //import com.example.krzysiek.builddiary.Item.Status;
 
 
@@ -47,17 +48,21 @@ public class EditItemActivity extends Activity {
         final int position = i.getIntExtra("position", 0);
         Double cost = i.getDoubleExtra("cost", 0);
         String category = i.getStringExtra("category");
-        dateString = i.getStringExtra("date");
+//        dateString = i.getStringExtra("date");
         Log.i(TAG, "dateString: " + dateString);
-        Date date = (Date)i.getSerializableExtra("date");
+        Date date = (Date) i.getSerializableExtra("date");
         Log.i(TAG, "date: " + date.toString());
 
         mTitleText = (EditText) findViewById(R.id.title);
         mTitleText.setText(i.getStringExtra("title"));
-       // mTitleText.setText(Item.FORMAT.format(date));
+        // mTitleText.setText(Item.FORMAT.format(date));
 
         mCost = (EditText) findViewById(R.id.cost);
-        mCost.setText(new DecimalFormat("##.00").format(cost));
+        if (cost == 0) {
+            mCost.setText(new DecimalFormat("0.00").format(cost));
+        } else {
+            mCost.setText(new DecimalFormat("##.00").format(cost));
+        }
         mCategorySpinner = (Spinner) findViewById(R.id.category_spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -122,36 +127,46 @@ public class EditItemActivity extends Activity {
         // Set up OnClickListener for the Submit Button
 
         final Button submitButton = (Button) findViewById(R.id.submitButton);
+        submitButton.setText(R.string.save);
         submitButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mTitleText.getText().toString().equals("")){
+                    Toast.makeText(EditItemActivity.this,R.string.missing_title_toast,Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    // gather Item data
 
-                // gather Item data
+                    // Get the current cost
+                    Double cost;
+                    if(mCost.getText().toString().equals("")||mCost.getText().toString().equals(".")||mCost.getText().toString().equals(",")){
+                        cost = 0.00;
+                    }
+                    else {
+                        cost = getCost();
+                    }
+                    // Get the current Status
+                    //Status status = getStatus();
 
-                // Get the current cost
-                Double cost = getCost();
+                    // Get the current Item Title
 
-                // Get the current Status
-                //Status status = getStatus();
+                    String titleString = getToDoTitle();
 
-                // Get the current Item Title
+                    String category = getCategory();
 
-                String titleString = getToDoTitle();
+                    // Construct the Date string
+                    String fullDate = dateString;
 
-                String category = getCategory();
+                    // Package Item data into an Intent
+                    Intent editedData = new Intent();
+                    Item.packageIntent(editedData, titleString, cost, fullDate, category);
 
-                // Construct the Date string
-                String fullDate = dateString;
+                    editedData.putExtra("position", position);
+                    // return data Intent and finish
 
-                // Package Item data into an Intent
-                Intent editedData = new Intent();
-                Item.packageIntent(editedData, titleString, cost, fullDate, category);
-
-                editedData.putExtra("position", position);
-                // return data Intent and finish
-
-                setResult(RESULT_OK, editedData);
-                finish();
+                    setResult(RESULT_OK, editedData);
+                    finish();
+                }
             }
         });
     }

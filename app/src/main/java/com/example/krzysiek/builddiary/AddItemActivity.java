@@ -16,6 +16,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
+import android.widget.Toast;
 //import com.example.krzysiek.builddiary.Item.Status;
 
 
@@ -128,34 +129,37 @@ public class AddItemActivity extends Activity {
         submitButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mTitleText.getText().toString().equals("")){
+                    Toast.makeText(AddItemActivity.this,R.string.missing_title_toast,Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    // Gather Item data
+                    // Get the current cost
+                    Double cost;
+                    if(mCost.getText().toString().equals("")||mCost.getText().toString().equals(".")||mCost.getText().toString().equals(",")){
+                        cost = 0.00;
+                    }
+                    else {
+                        cost = getCost();
+                    }
 
-                // gather Item data
+                    // Get the current Item Title
+                    String titleString = getToDoTitle();
 
-                // Get the current cost
-                Double cost = getCost();
+                    String category = getCategory();
 
-                // Get the current Status
-               //Status status = getStatus();
+                    // Construct the Date string
+                    String fullDate = dateString;
 
-                // Get the current Item Title
+                    // Package Item data into an Intent
+                    Intent data = new Intent();
+                    Item.packageIntent(data, titleString, cost, fullDate, category);
 
-                String titleString = getToDoTitle();
+                    // return data Intent and finish
 
-                String category = getCategory();
-
-                // Construct the Date string
-                String fullDate = dateString;
-
-                // Package Item data into an Intent
-                Intent data = new Intent();
-                Item.packageIntent(data, titleString, cost, fullDate, category);
-
-                // return data Intent and finish
-
-                setResult(RESULT_OK, data);
-                finish();
-
-
+                    setResult(RESULT_OK, data);
+                    finish();
+                }
             }
         });
     }
@@ -211,6 +215,7 @@ public class AddItemActivity extends Activity {
 
     private Double getCost() {return Double.valueOf(mCost.getText().toString());}
 
+
     /*{return mCost.getText().toString();
 
        /* switch (mPriorityRadioGroup.getCheckedRadioButtonId()) {
@@ -236,9 +241,7 @@ public class AddItemActivity extends Activity {
         //    }
         }*/
 
-    private String getToDoTitle() {
-        return mTitleText.getText().toString();
-    }
+    private String getToDoTitle() {return mTitleText.getText().toString();}
 
     private String getCategory() {return mCategorySpinner.getSelectedItem().toString();}
 

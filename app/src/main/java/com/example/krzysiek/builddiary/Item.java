@@ -41,7 +41,6 @@ public class Item {
         this.mCategory = category;
     }
 
-
     //Item(String title, Double cost, /*Status status,*/ Date date, String category, Integer position) {
      //   this.mTitle = title;
       //  this.mCost = cost;
@@ -50,7 +49,6 @@ public class Item {
        // this.mCategory = category;
        // this.mPosition = position;
     //}
-
 
     // Create a new Item from data packaged in an Intent
 

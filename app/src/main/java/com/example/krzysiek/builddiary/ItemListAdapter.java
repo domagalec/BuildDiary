@@ -137,7 +137,12 @@ public class ItemListAdapter extends BaseAdapter {
 
         // Display Cost in a TextView
         final TextView costView = (TextView) itemLayout.findViewById(R.id.costView);
-        costView.setText(new DecimalFormat("##.00").format(item.getCost()));
+        if (item.getCost() == 0){
+            costView.setText(new DecimalFormat("0.00").format(item.getCost()));
+        }
+        else {
+            costView.setText(new DecimalFormat("##.00").format(item.getCost()));
+        }
 
         //Display Category in a TextView
         final TextView categoryView = (TextView) itemLayout.findViewById(R.id.categoryView);

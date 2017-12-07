@@ -12,6 +12,10 @@
     <string name="item_add">Dodaj</string>
     <string name="reset">Zresetuj</string>
     <string name="total_cost">Całkowity koszt</string>
+    <string name="missing_title_toast">Proszę wpisać nazwę</string>
+    <string name="item_deleted">Wpis usunięty</string>
+
+
 
     <string-array name="category_array">
         <item><string name="formalities">Formalności</string></item>
@@ -29,4 +33,5 @@
     <string name="delete">Usuń</string>
     <string name="menu_edit">Edytuj</string>
     <string name="menu_delete">Usuń</string>
+    <string name="save">Zapisz</string>
 </resources>

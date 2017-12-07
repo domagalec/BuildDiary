@@ -14,6 +14,9 @@
     <string name="delete">Delete</string>
     <string name="menu_edit">Edit</string>
     <string name="menu_delete">Delete</string>
+    <string name="save">Save</string>
+    <string name="missing_title_toast">Please enter the name</string>
+    <string name="item_deleted">Item deleted</string>
 
     <string-array name="category_array">
         <item><string name="formalities">Formalities</string></item>

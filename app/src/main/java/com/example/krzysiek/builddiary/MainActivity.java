@@ -174,7 +174,7 @@ public class MainActivity extends Activity {
             case 1:
                 mAdapter.remove(position);
                 totalCostUpdate();
-                Toast.makeText(this, "Item deleted", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.item_deleted, Toast.LENGTH_SHORT).show();
                 break;
 
             default:
