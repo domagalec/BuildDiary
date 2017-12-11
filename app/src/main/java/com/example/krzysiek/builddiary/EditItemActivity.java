@@ -25,6 +25,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class EditItemActivity extends Activity {
 
@@ -60,8 +61,13 @@ public class EditItemActivity extends Activity {
         mCost = (EditText) findViewById(R.id.cost);
         if (cost == 0) {
             mCost.setText(new DecimalFormat("0.00").format(cost));
+            String newcost = String.valueOf(mCost.getText());
+            mCost.setText(newcost.replace(',', '.'));
+
         } else {
             mCost.setText(new DecimalFormat("##.00").format(cost));
+            String newcost = String.valueOf(mCost.getText());
+            mCost.setText(newcost.replace(',', '.'));
         }
         mCategorySpinner = (Spinner) findViewById(R.id.category_spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout

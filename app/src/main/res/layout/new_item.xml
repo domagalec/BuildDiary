@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
 
-    <!-- Title -->
+ <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:fillViewport="true">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
 
     <TextView
         android:id="@+id/TitleLabel"
@@ -92,6 +97,13 @@
         android:layout_below="@id/date"
         android:text="@string/item_date" />
 
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@id/date_picker_button"
+            android:gravity="bottom">
+
     <Button
         android:id="@+id/cancelButton"
         android:layout_width="wrap_content"
@@ -116,5 +128,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:text="@string/item_add" />
+        </RelativeLayout>
 
-</RelativeLayout>
+    </RelativeLayout>
+</ScrollView>

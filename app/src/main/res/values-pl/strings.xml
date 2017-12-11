@@ -6,7 +6,7 @@
     <string name="cancel">Anuluj</string>
     <string name="create_alert_title">Nowy projekt</string>
     <string name="item_name">Nazwa</string>
-    <string name="item_category">Wybierz kategorię</string>
+    <string name="item_category">Kategoria</string>
     <string name="item_date">Data</string>
     <string name="item_cost">Koszt</string>
     <string name="item_add">Dodaj</string>
