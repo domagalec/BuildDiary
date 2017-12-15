@@ -21,38 +21,47 @@
 
     </RelativeLayout>
 
+    <!--<View style="@style/Divider" />-->
+
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/RelativeLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_weight="0"
-        >
+        android:background="@color/yellow"
+        android:fadingEdge="horizontal"
+        android:orientation="vertical">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true" />
 
         <TextView
             android:id="@+id/TotalCost"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:text="@string/total_cost"/>
+            android:layout_below="@id/progressBar"
+            android:text="@string/total_cost" />
 
         <TextView
             android:id="@+id/summaryView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
             android:layout_below="@id/TotalCost"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            />
+            android:text="TextView"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
             android:id="@+id/ShowDetails"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
             android:layout_alignBaseline="@+id/summaryView"
+            android:layout_marginLeft="10dp"
             android:layout_toEndOf="@+id/summaryView"
             android:layout_toRightOf="@+id/summaryView"
             android:text="@string/show_details" />
@@ -61,11 +70,11 @@
             android:id="@+id/addbutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/summaryView"
             android:layout_alignParentRight="true"
+            android:background="@color/yellow"
             android:text="@string/item_add"
-            android:layout_alignParentTop="true"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            />
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
     </RelativeLayout>
 
