@@ -17,8 +17,7 @@
         <ListView
             android:id="@+id/listView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-/>
+            android:layout_height="wrap_content" />
 
     </RelativeLayout>
 
@@ -47,6 +46,16 @@
             android:layout_below="@id/TotalCost"
             android:textAppearance="?android:attr/textAppearanceLarge"
             />
+
+        <TextView
+            android:id="@+id/ShowDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_alignBaseline="@+id/summaryView"
+            android:layout_toEndOf="@+id/summaryView"
+            android:layout_toRightOf="@+id/summaryView"
+            android:text="@string/show_details" />
 
         <Button
             android:id="@+id/addbutton"

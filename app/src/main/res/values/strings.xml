@@ -17,6 +17,7 @@
     <string name="save">Save</string>
     <string name="missing_title_toast">Please enter the name</string>
     <string name="item_deleted">Item deleted</string>
+    <string name="show_details">Show details</string>
 
     <string-array name="category_array">
         <item><string name="formalities">Formalities</string></item>

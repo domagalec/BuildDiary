@@ -1,10 +1,14 @@
 package com.example.krzysiek.builddiary;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -16,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.ListPopupWindow;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -38,7 +43,7 @@ import java.util.Date;
 
 //import com.example.krzysiek.builddiary.Item.Status;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
         private static final int ADD_ITEM_REQUEST = 1;
         private static final int EDIT_ITEM_REQUEST = 2;
@@ -52,11 +57,16 @@ public class MainActivity extends Activity {
         ItemListAdapter mAdapter;
         TextView summaryView;
         ListView listView;
+        TextView showDetails;
         Button addButton;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setLogo(R.mipmap.ic_launcher);
+            getSupportActionBar().setDisplayUseLogoEnabled(true);
+            setContentView(R.layout.activity_main);
 
             // Create a new TodoListAdapter for this ListActivity's ListView
             
@@ -91,6 +101,8 @@ public class MainActivity extends Activity {
           //  setListAdapter(mAdapter);
 
             setContentView(R.layout.main);
+           // Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+           // setSupportActionBar(toolbar);
             summaryView = (TextView) findViewById(R.id.summaryView);
             listView = (ListView) findViewById(R.id.listView);
             listView.setAdapter(mAdapter);
@@ -100,6 +112,24 @@ public class MainActivity extends Activity {
 
            //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
           // setSupportActionBar(toolbar);
+
+            showDetails = (TextView) findViewById(R.id.ShowDetails);
+            showDetails.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                    alertDialog.setTitle("Alert");
+                    alertDialog.setMessage("Alert message to be shown");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+                }
+            });
 
             addButton = (Button) findViewById(R.id.addbutton);
             addButton.setOnClickListener(new OnClickListener() {

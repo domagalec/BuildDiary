@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -23,7 +24,7 @@ import android.widget.Toast;
 import java.util.Calendar;
 import java.util.Date;
 
-public class AddItemActivity extends Activity {
+public class AddItemActivity extends AppCompatActivity {
 
     private static final String TAG = "BuildDiary";
 
@@ -45,6 +46,10 @@ public class AddItemActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.mipmap.ic_launcher);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        setContentView(R.layout.activity_main);
         setContentView(R.layout.new_item);
 
         mTitleText = (EditText) findViewById(R.id.title);
