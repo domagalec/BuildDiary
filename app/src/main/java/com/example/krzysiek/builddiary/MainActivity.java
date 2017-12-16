@@ -3,12 +3,16 @@ package com.example.krzysiek.builddiary;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -16,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -23,6 +28,7 @@ import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ListPopupWindow;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
@@ -41,6 +47,8 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.Date;
 
+import static java.lang.Double.parseDouble;
+
 //import com.example.krzysiek.builddiary.Item.Status;
 
 public class MainActivity extends AppCompatActivity {
@@ -48,78 +56,51 @@ public class MainActivity extends AppCompatActivity {
         private static final int ADD_ITEM_REQUEST = 1;
         private static final int EDIT_ITEM_REQUEST = 2;
         private static final String FILE_NAME = "BuilderDiaryData.txt";
-        private static final String TAG = "BuilderDiary";
+        private static final String TAG = "BuildDiary";
 
         // IDs for menu items
         private static final int MENU_DELETE = Menu.FIRST;
         private static final int MENU_DUMP = Menu.FIRST + 1;
+        private static final int MENU_BUDGET = Menu.FIRST + 2;
 
         ItemListAdapter mAdapter;
         TextView summaryView;
         ListView listView;
         TextView showDetails;
         Button addButton;
+        ProgressBar budgetBar;
+        TextView percentView;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+
+            SharedPreferences settings = getSharedPreferences("preferences", MODE_PRIVATE);
+            settings.getString("budget", "0");
+
             if(getSupportActionBar() != null){
                 getSupportActionBar().setDisplayShowHomeEnabled(true);
             }
             getSupportActionBar().setLogo(R.mipmap.ic_launcher);
             getSupportActionBar().setDisplayUseLogoEnabled(true);
-            setContentView(R.layout.activity_main);
 
             // Create a new TodoListAdapter for this ListActivity's ListView
-            
             mAdapter = new ItemListAdapter(getApplicationContext());
 
-            // Put divider between ToDoItems and FooterView
-        //    getListView().setFooterDividersEnabled(true);
-            // BYŁODOZROBIENIA - Inflate footerView for footer_view.xml file
-           // LayoutInflater inflater = (LayoutInflater)this.getSystemService
-           // 		(this.LAYOUT_INFLATER_SERVICE);
-           // TextView footerView = (TextView) findViewById(R.id.footerView);
-           // TextView footerView = (TextView) ((LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.footer_view, null, false);
-        //    LayoutInflater inflater = LayoutInflater.from(this);
-        //    TextView footerView = (TextView) inflater.inflate(R.layout.footer_view, null);
-            // NOTE: You can remove this block once you've implemented the assignment
-            //if (null == footerView) {
-            //	return;
-            //}
-            //DOZROBIENIABYLO - Add footerView to ListView
-        //   getListView().addFooterView(footerView);
-            // Attach Listener to FooterView
-          //addButton = (Button) findViewById(R.id.addbutton);
-        //    footerView.setOnClickListener(new OnClickListener() {
-        //        @Override
-        //        public void onClick(View v) {
-        //            Intent intent = new Intent(MainActivity.this, AddItemActivity.class);
-        //            startActivityForResult(intent, ADD_TODO_ITEM_REQUEST);
-                    //może FOR RESULT? Implement OnClick().
-        //        }
-        //    });
-            // - Attach the adapter to this ListActivity's ListView
-          //  setListAdapter(mAdapter);
-
             setContentView(R.layout.main);
-           // Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-           // setSupportActionBar(toolbar);
+
             summaryView = (TextView) findViewById(R.id.summaryView);
             listView = (ListView) findViewById(R.id.listView);
             listView.setAdapter(mAdapter);
             registerForContextMenu(listView);
+            budgetBar = (ProgressBar) findViewById(R.id.budgetBar);
+            percentView = (TextView) findViewById(R.id.percentView);
 
-            totalCostUpdate();
-
-           //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-          // setSupportActionBar(toolbar);
-
-            showDetails = (TextView) findViewById(R.id.ShowDetails);
+            showDetails = (Button) findViewById(R.id.ShowDetails);
+            showDetails.setText(settings.getString("budget", "0"));
             showDetails.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
                     alertDialog.setTitle("Alert");
                     alertDialog.setMessage("Alert message to be shown");
@@ -206,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
             case 1:
                 mAdapter.remove(position);
                 totalCostUpdate();
+                budgetBarUpdate();
                 Toast.makeText(this, R.string.item_deleted, Toast.LENGTH_SHORT).show();
                 break;
 
@@ -227,28 +209,20 @@ public class MainActivity extends AppCompatActivity {
             // and then add it to the adapteR
             if (resultCode == RESULT_OK) {
                 if (requestCode == 1) {
-                    // Make sure the request was successful
-                    //if (resultCode == RESULT_OK) {
-
                     Item newItem = new Item(data);
                     mAdapter.add(newItem);
                     Log.i(TAG, "Added new item");
-                    // The user picked a contact.
-                    // The Intent's data Uri identifies which contact was selected.
-                    //String result=data.getStringExtra("zwrot");
-                    //mUserTextView.setText(result);
-                    // Do something with the contact here (bigger example below)
                     totalCostUpdate();
+                    budgetBarUpdate();
                 }
                 else if (requestCode == 2) {
-                    //if (resultCode == RESULT_OK){
                     int position = 0;
                     Item editedItem = new Item(data);
                     position = data.getIntExtra("position", 0);
                     mAdapter.edit(editedItem, position);
-
                     Log.i(TAG, "Edited item");
                     totalCostUpdate();
+                    budgetBarUpdate();
                 }
             }
         }
@@ -262,6 +236,7 @@ public class MainActivity extends AppCompatActivity {
             if (mAdapter.getCount() == 0)
                 loadItems();
                 totalCostUpdate();
+                budgetBarUpdate();
 
         }
 
@@ -275,6 +250,7 @@ public class MainActivity extends AppCompatActivity {
         if (mAdapter.getCount() == 0)
             loadItems();
             totalCostUpdate();
+            budgetBarUpdate();
     }
 
         @Override
@@ -299,6 +275,7 @@ public class MainActivity extends AppCompatActivity {
 
             menu.add(Menu.NONE, MENU_DELETE, Menu.NONE, "Delete all");
             menu.add(Menu.NONE, MENU_DUMP, Menu.NONE, "Dump to log");
+            menu.add(Menu.NONE, MENU_BUDGET, Menu.NONE, R.string.set_budget);
             return true;
         }
 
@@ -308,10 +285,71 @@ public class MainActivity extends AppCompatActivity {
                 case MENU_DELETE:
                     mAdapter.clear();
                     totalCostUpdate();
+                    budgetBarUpdate();
                     return true;
                 case MENU_DUMP:
                     dump();
                     return true;
+                case MENU_BUDGET:
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+                    final EditText budgetEditText = new EditText(MainActivity.this);
+                    budgetEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
+                    SharedPreferences settings = getSharedPreferences("preferences", MODE_PRIVATE);
+                    if (!settings.getString("budget", "0").equals("0")) {
+                        budgetEditText.setText(settings.getString("budget", "0"));
+                    }
+                    builder.setMessage(R.string.set_budget)
+                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    if(!budgetEditText.getText().toString().equals("")){
+                                        double budget = Double.parseDouble(budgetEditText.getText().toString());
+                                        if (budget>0){
+                                            if ((int) Math.round(getTotalCost()*100/budget) <=100) {
+                                                budgetBar.setProgress((int) Math.round(getTotalCost() * 100 / budget));
+                                                percentView.setText(String.valueOf((int) Math.round(getTotalCost() * 100 / budget))+ "%");
+                                            }
+                                            else {
+                                                budgetBar.setProgress(100);
+                                                percentView.setText(String.valueOf((int) Math.round(getTotalCost() * 100 / budget))+ "%");
+                                                percentView.setTextColor(Color.RED);
+                                            }
+
+
+                                        }
+                                        else {
+                                            budgetBar.setProgress(0);
+                                            percentView.setText("0%");
+                                            percentView.setTextColor(Color.BLACK);
+                                        }
+
+                                    }
+                                    else {
+                                        budgetBar.setProgress(0);
+                                        percentView.setText("0%");
+                                        percentView.setTextColor(Color.BLACK);
+                                    }
+
+                                    SharedPreferences settings = getSharedPreferences("preferences", MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = settings.edit();
+                                    editor.putString("budget", budgetEditText.getText().toString());
+                                    editor.apply();
+                                }
+                            })
+                            .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    // User cancelled the dialog
+                                }
+                            })
+                            .setView(budgetEditText);
+
+                    // Create the AlertDialog object and return it
+                    builder.create();
+                    builder.show();
+                    budgetEditText.requestFocus();
+                    return true;
+
                 default:
                     return super.onOptionsItemSelected(item);
             }
@@ -323,7 +361,6 @@ public class MainActivity extends AppCompatActivity {
                 String data = ((Item) mAdapter.getItem(i)).toLog();
                 Log.i(TAG,	"Item " + i + ": " + data.replace(Item.ITEM_SEP, ","));
             }
-
         }
 
         // Load stored Items
@@ -387,9 +424,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void totalCostUpdate(){
-            double total=0;
+
+            double total = 0;
+
             for (int i = 0; i < mAdapter.getCount(); i++) {
-                total = total+((Item) mAdapter.getItem(i)).getCost();
+                   total = total+((Item) mAdapter.getItem(i)).getCost();
             }
             if (total == 0){
                 summaryView.setText(new DecimalFormat("0.00").format(total));
@@ -397,6 +436,47 @@ public class MainActivity extends AppCompatActivity {
             else {
                 summaryView.setText(new DecimalFormat("##.00").format(total));
             }
-           // String.valueOf(total)
+        }
+
+        public double getTotalCost(){
+            double total = 0;
+            for (int i = 0; i < mAdapter.getCount(); i++) {
+                total = total+((Item) mAdapter.getItem(i)).getCost();
+            }
+            return total;
+        }
+
+        public void budgetBarUpdate(){
+            SharedPreferences settings = getSharedPreferences("preferences", MODE_PRIVATE);
+            settings.getString("budget", "0");
+            Double total = getTotalCost();
+            Toast.makeText(MainActivity.this, String.valueOf(total), Toast.LENGTH_SHORT).show();
+
+            if(!settings.getString("budget", "0").equals("")){
+                double budget = Double.parseDouble(settings.getString("budget", "0"));
+                if (budget>0){
+                    if ((int) Math.round(getTotalCost()*100/budget) <=100) {
+                        budgetBar.setProgress((int) Math.round(getTotalCost() * 100 / budget));
+                        percentView.setText(String.valueOf((int) Math.round(getTotalCost() * 100 / budget))+ "%");
+                        percentView.setTextColor(Color.BLACK);
+
+                }
+                    else {
+                        budgetBar.setProgress(100);
+                        percentView.setText(String.valueOf((int) Math.round(getTotalCost() * 100 / budget))+ "%");
+                        percentView.setTextColor(Color.RED);                    }
+                }
+                else {
+                    budgetBar.setProgress(0);
+                    percentView.setText("0%");
+                    percentView.setTextColor(Color.BLACK);
+
+                }
+            }
+            else {
+                budgetBar.setProgress(0);
+                percentView.setText("0%");
+                percentView.setTextColor(Color.BLACK);
+            }
         }
     }

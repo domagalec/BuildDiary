@@ -14,9 +14,13 @@
     <string name="total_cost">Całkowity koszt</string>
     <string name="missing_title_toast">Proszę wpisać nazwę</string>
     <string name="item_deleted">Wpis usunięty</string>
-    <string name="show_details">Pokaż szczegóły</string>
-
-
+    <string name="show_details">Szczegóły</string>
+    <string name="delete">Usuń</string>
+    <string name="menu_edit">Edytuj</string>
+    <string name="menu_delete">Usuń</string>
+    <string name="save">Zapisz</string>
+    <string name="set_budget">Ustaw budżet</string>
+    <string name="ok">OK</string>
 
 
     <string-array name="category_array">
@@ -24,6 +28,7 @@
         <item><string name="lot">Działka</string></item>
         <item><string name="foundations">Fundamenty</string></item>
         <item><string name="walls">Ściany</string></item>
+        <item><string name="ceilings">Stropy</string></item>
         <item><string name="roof">Dach</string></item>
         <item><string name="doors_windows">Drzwi i okna</string></item>
         <item><string name="installations">Instalacje</string></item>
@@ -32,8 +37,4 @@
         <item><string name="furnishing">Wyposażenie</string></item>
         <item><string name="garden">Ogród</string></item>
     </string-array>
-    <string name="delete">Usuń</string>
-    <string name="menu_edit">Edytuj</string>
-    <string name="menu_delete">Usuń</string>
-    <string name="save">Zapisz</string>
 </resources>

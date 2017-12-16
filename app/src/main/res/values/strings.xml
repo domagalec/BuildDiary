@@ -17,13 +17,16 @@
     <string name="save">Save</string>
     <string name="missing_title_toast">Please enter the name</string>
     <string name="item_deleted">Item deleted</string>
-    <string name="show_details">Show details</string>
+    <string name="show_details">Details</string>
+    <string name="set_budget">Set your budget</string>
+    <string name="ok">OK</string>
 
     <string-array name="category_array">
         <item><string name="formalities">Formalities</string></item>
         <item><string name="lot">Lot</string></item>
         <item><string name="foundations">Foundations</string></item>
         <item><string name="walls">Walls</string></item>
+        <item><string name="ceilings">Ceilings</string></item>
         <item><string name="roof">Roof</string></item>
         <item><string name="doors_windows">Doors and windows</string></item>
         <item><string name="installations">Installations</string></item>

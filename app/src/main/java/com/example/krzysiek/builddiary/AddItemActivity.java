@@ -51,7 +51,6 @@ public class AddItemActivity extends AppCompatActivity {
         }
         getSupportActionBar().setLogo(R.mipmap.ic_launcher);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
-        setContentView(R.layout.activity_main);
         setContentView(R.layout.new_item);
 
         mTitleText = (EditText) findViewById(R.id.title);
@@ -272,8 +271,7 @@ public class AddItemActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear,
-                              int dayOfMonth) {
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             setDateString(dayOfMonth, monthOfYear, year);
 
             dateView.setText(dateString);

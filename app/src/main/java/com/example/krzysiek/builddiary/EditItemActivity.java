@@ -49,7 +49,6 @@ public class EditItemActivity extends AppCompatActivity {
         }
         getSupportActionBar().setLogo(R.mipmap.ic_launcher);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
-        setContentView(R.layout.activity_main);
         setContentView(R.layout.new_item);
 
         Intent i = getIntent();
