@@ -4,10 +4,13 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -64,6 +67,16 @@ public class AddItemActivity extends AppCompatActivity {
         // Apply the adapter to the spinner
         mCategorySpinner.setAdapter(adapter);
 
+        mCategorySpinner.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                InputMethodManager imm=(InputMethodManager)getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                return false;
+            }
+        }) ;
+
         //mDefaultStatusButton = (RadioButton) findViewById(R.id.statusNotDone);
         //mDefaultPriorityButton = (RadioButton) findViewById(R.id.medPriority);
         //mPriorityRadioGroup = (RadioGroup) findViewById(R.id.priorityGroup);
@@ -83,6 +96,11 @@ public class AddItemActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+                InputMethodManager inputManager = (InputMethodManager)
+                        getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
                 showDatePickerDialog();
             }
         });

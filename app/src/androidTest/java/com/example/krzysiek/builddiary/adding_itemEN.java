@@ -33,7 +33,7 @@ import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class adding_item {
+public class adding_itemEN {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
@@ -45,7 +45,7 @@ public class adding_item {
             Log.i(TAG, String.valueOf(i));
 
             ViewInteraction appCompatButton = onView(
-                    allOf(withId(R.id.addbutton), withText("Dodaj"),
+                    allOf(withId(R.id.addbutton), withText("Add"),
                             childAtPosition(
                                     allOf(withId(R.id.RelativeLayout2),
                                             childAtPosition(
@@ -91,7 +91,7 @@ public class adding_item {
             appCompatEditText6.perform(pressImeActionButton());
 
             ViewInteraction appCompatButton2 = onView(
-                    allOf(withId(R.id.submitButton), withText("Dodaj"),
+                    allOf(withId(R.id.submitButton), withText("Add"),
                             childAtPosition(
                                     childAtPosition(
                                             withClassName(is("android.widget.RelativeLayout")),

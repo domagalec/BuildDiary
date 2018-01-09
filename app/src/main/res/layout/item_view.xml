@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
+            android:layout_marginLeft="5dp"
             android:textAppearance="?android:attr/textAppearanceLarge"/>
 
         <TextView
@@ -28,7 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@id/titleView"
-            android:text="@string/item_date"/>
+            android:layout_marginLeft="5dp"
+            android:text="@string/item_date_adapter"/>
 
         <TextView
             android:id="@+id/dateView"
@@ -44,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/DateLabel"
             android:layout_toLeftOf="@id/costView"
-            android:text="@string/item_cost" />
+            android:text="@string/item_cost_adapter" />
 
         <TextView
             android:id="@+id/costView"
@@ -52,6 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/dateView"
             android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_alignParentRight="true"
            />
         <TextView
@@ -60,7 +63,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@id/DateLabel"
-            android:text="@string/item_category"/>
+            android:layout_marginLeft="5dp"
+            android:text="@string/item_category_adapter"/>
 
         <TextView
             android:id="@+id/categoryView"

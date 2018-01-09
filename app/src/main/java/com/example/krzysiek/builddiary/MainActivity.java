@@ -34,6 +34,8 @@ import android.widget.TextView;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
@@ -45,7 +47,13 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import static java.lang.Double.parseDouble;
 
@@ -97,20 +105,114 @@ public class MainActivity extends AppCompatActivity {
             percentView = (TextView) findViewById(R.id.percentView);
 
             showDetails = (Button) findViewById(R.id.ShowDetails);
-            showDetails.setText(settings.getString("budget", "0"));
             showDetails.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-                    alertDialog.setTitle("Alert");
-                    alertDialog.setMessage("Alert message to be shown");
-                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
+
+                    final LinkedHashMap<String,String> listMap =  new LinkedHashMap<String, String>();
+                    String catArr[] = getResources().getStringArray(R.array.category_array);
+
+                    for (int i = 0; i < catArr.length; i++) {
+                        double categoryCost = 0.0;
+
+                        for (int j=0; j < mAdapter.getCount(); j++) {
+                            Item item = (Item) mAdapter.getItem(j);
+                            if (item.getCategory().equals(catArr[i])){
+                                categoryCost = categoryCost + item.getCost();
+                            }
+                        }
+                        if (categoryCost != 0.0) {
+                            listMap.put(catArr[i], String.valueOf(new DecimalFormat("##.00").format(categoryCost)));
+                        }
+                        Log.i("TAG",catArr[i]);
+                    }
+
+
+                   /*() for (Map.Entry<String,String> entry : listMap.entrySet()) {
+                        String key = entry.getKey();
+                        String value = entry.getValue();
+                        Log.i("TAG", key + value);
+                    }*/
+
+                    final AlertDialog.Builder detailsBuilder = new AlertDialog.Builder(MainActivity.this);
+                    detailsBuilder.setTitle(R.string.show_details);
+
+                    LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
+                    View dialogView = inflater.inflate(R.layout.details_dialog, null);
+                    detailsBuilder.setView(dialogView);
+                    detailsBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            listMap.clear();
+                            dialog.dismiss();
+                        }
+                    });
+
+                    ListView detailsView = (ListView) dialogView.findViewById(R.id.detailsView);
+
+
+                    DetailsAdapter adapter = new DetailsAdapter(listMap);
+
+                    //ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(MainActivity.this,
+                    //        R.array.category_array, android.R.layout.simple_list_item_1);
+
+                    detailsView.setAdapter(adapter);
+
+
+                    /*final ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(MainActivity.this,
+                            R.array.category_array, android.R.layout.simple_list_item_1);
+
+                    ArrayList<HashMap<String,String>> listMap =  new ArrayList<HashMap<String, String>>();
+                    HashMap<String,String> map1 =new HashMap<String, String>();
+                    map1.put("title","Amdroid1");
+                    HashMap<String,String> map2 =new HashMap<String, String>();
+                    map2.put("title","Amdroid2");
+                    HashMap<String,String> map3 =new HashMap<String, String>();
+                    map3.put("title","Amdroid3");
+                    HashMap<String,String> map4 =new HashMap<String, String>();
+                    map4.put("title","Amdroid4");
+                    HashMap<String,String> map5 =new HashMap<String, String>();
+                    map5.put("title","Amdroid5");
+
+                    listMap.add(map1);
+                    listMap.add(map2);
+                    listMap.add(map3);
+                    listMap.add(map4);
+                    listMap.add(map5);
+
+                    ArrayList<String> listString = new ArrayList<String>();
+                    for(HashMap<String,String> row : listMap){
+                        listString.add(row.get("title"));
+                    }
+
+                    String[] array = listString.toArray(new String[listString.size()]);
+                    System.out.println("Lenght "+array.length);
+
+                    detailsBuilder.setNegativeButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    detailsBuilder.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            CharSequence strName = arrayAdapter.getItem(which);
+                            AlertDialog.Builder builderInner = new AlertDialog.Builder(MainActivity.this);
+                            builderInner.setMessage(strName);
+                            builderInner.setTitle("Your Selected Item is");
+                            builderInner.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog,int which) {
                                     dialog.dismiss();
                                 }
                             });
-                    alertDialog.show();
+                            builderInner.show();
+                        }
+                    });*/
+                    detailsBuilder.create();
+                    detailsBuilder.show();
                 }
             });
 
@@ -211,6 +313,7 @@ public class MainActivity extends AppCompatActivity {
                 if (requestCode == 1) {
                     Item newItem = new Item(data);
                     mAdapter.add(newItem);
+                    listView.setSelection(mAdapter.getCount());
                     Log.i(TAG, "Added new item");
                     totalCostUpdate();
                     budgetBarUpdate();
@@ -237,7 +340,6 @@ public class MainActivity extends AppCompatActivity {
                 loadItems();
                 totalCostUpdate();
                 budgetBarUpdate();
-
         }
 
 
@@ -251,7 +353,7 @@ public class MainActivity extends AppCompatActivity {
             loadItems();
             totalCostUpdate();
             budgetBarUpdate();
-    }
+        }
 
         @Override
         protected void onStop() {
@@ -292,10 +394,12 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 case MENU_BUDGET:
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    AlertDialog dialog;
 
                     final EditText budgetEditText = new EditText(MainActivity.this);
                     budgetEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
+                    //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
+                    budgetEditText.setSelectAllOnFocus(true);
                     SharedPreferences settings = getSharedPreferences("preferences", MODE_PRIVATE);
                     if (!settings.getString("budget", "0").equals("0")) {
                         budgetEditText.setText(settings.getString("budget", "0"));
@@ -309,21 +413,19 @@ public class MainActivity extends AppCompatActivity {
                                             if ((int) Math.round(getTotalCost()*100/budget) <=100) {
                                                 budgetBar.setProgress((int) Math.round(getTotalCost() * 100 / budget));
                                                 percentView.setText(String.valueOf((int) Math.round(getTotalCost() * 100 / budget))+ "%");
+                                                percentView.setTextColor(Color.BLACK);
                                             }
                                             else {
                                                 budgetBar.setProgress(100);
                                                 percentView.setText(String.valueOf((int) Math.round(getTotalCost() * 100 / budget))+ "%");
                                                 percentView.setTextColor(Color.RED);
                                             }
-
-
                                         }
                                         else {
                                             budgetBar.setProgress(0);
                                             percentView.setText("0%");
                                             percentView.setTextColor(Color.BLACK);
                                         }
-
                                     }
                                     else {
                                         budgetBar.setProgress(0);
@@ -345,9 +447,9 @@ public class MainActivity extends AppCompatActivity {
                             .setView(budgetEditText);
 
                     // Create the AlertDialog object and return it
-                    builder.create();
-                    builder.show();
-                    budgetEditText.requestFocus();
+                    dialog = builder.create();
+                    dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+                    dialog.show();
                     return true;
 
                 default:
@@ -382,7 +484,10 @@ public class MainActivity extends AppCompatActivity {
                     date = Item.FORMAT.parse(reader.readLine());
                     category = reader.readLine();
                     mAdapter.add(new Item(title, Double.valueOf(cost) /*Status.valueOf(status)*/, date, category));
+
                 }
+                listView.setSelection(mAdapter.getCount());
+
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -450,7 +555,7 @@ public class MainActivity extends AppCompatActivity {
             SharedPreferences settings = getSharedPreferences("preferences", MODE_PRIVATE);
             settings.getString("budget", "0");
             Double total = getTotalCost();
-            Toast.makeText(MainActivity.this, String.valueOf(total), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MainActivity.this, String.valueOf(total), Toast.LENGTH_SHORT).show();
 
             if(!settings.getString("budget", "0").equals("")){
                 double budget = Double.parseDouble(settings.getString("budget", "0"));

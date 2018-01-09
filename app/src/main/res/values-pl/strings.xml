@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">BuildDiary</string>
     <string name="action_settings">Ustawienia</string>
     <string name="create_project">Utwórz</string>
@@ -9,6 +10,9 @@
     <string name="item_category">Kategoria</string>
     <string name="item_date">Data</string>
     <string name="item_cost">Koszt</string>
+    <string name="item_category_adapter">Kategoria:</string>
+    <string name="item_date_adapter">Data:</string>
+    <string name="item_cost_adapter">Koszt:</string>
     <string name="item_add">Dodaj</string>
     <string name="reset">Zresetuj</string>
     <string name="total_cost">Całkowity koszt</string>
@@ -21,7 +25,6 @@
     <string name="save">Zapisz</string>
     <string name="set_budget">Ustaw budżet</string>
     <string name="ok">OK</string>
-
 
     <string-array name="category_array">
         <item><string name="formalities">Formalności</string></item>
@@ -36,5 +39,8 @@
         <item><string name="elevation">Elewacja</string></item>
         <item><string name="furnishing">Wyposażenie</string></item>
         <item><string name="garden">Ogród</string></item>
+        <item><string name="other">Inne</string></item>
     </string-array>
+    <string name="delete_all">Usuń wszystko</string>
+
 </resources>

@@ -4,11 +4,15 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -62,6 +66,7 @@ public class EditItemActivity extends AppCompatActivity {
 
         mTitleText = (EditText) findViewById(R.id.title);
         mTitleText.setText(i.getStringExtra("title"));
+        mTitleText.setSelection(mTitleText.getText().length());
         // mTitleText.setText(Item.FORMAT.format(date));
 
         mCost = (EditText) findViewById(R.id.cost);
@@ -88,6 +93,18 @@ public class EditItemActivity extends AppCompatActivity {
           //  int spinnerPosition = adapter.getPosition(category);
           //  mCategorySpinner.setSelection(spinnerPosition);
 
+        mCategorySpinner.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                InputMethodManager imm=(InputMethodManager)getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                return false;
+            }
+        }) ;
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
         dateView = (TextView) findViewById(R.id.date);
         dateView.setText(Item.FORMAT.format(date));
 
@@ -103,6 +120,11 @@ public class EditItemActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+                InputMethodManager inputManager = (InputMethodManager)
+                        getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
                 showDatePickerDialog();
             }
         });
@@ -182,8 +204,6 @@ public class EditItemActivity extends AppCompatActivity {
             }
         });
     }
-
-    // Do not modify below this point.
 
     private void setNoChangeDate(Date date) {
         mDate = new Date();
