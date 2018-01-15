@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
         private static final int ADD_ITEM_REQUEST = 1;
         private static final int EDIT_ITEM_REQUEST = 2;
-        private static final String FILE_NAME = "BuilderDiaryData.txt";
+        private static final String FILE_NAME = "BuildDiaryData.txt";
         private static final String TAG = "BuildDiary";
 
         // IDs for menu items
@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                     }*/
 
                     final AlertDialog.Builder detailsBuilder = new AlertDialog.Builder(MainActivity.this);
-                    detailsBuilder.setTitle(R.string.show_details);
+                    detailsBuilder.setTitle(R.string.summary);
 
                     LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
                     View dialogView = inflater.inflate(R.layout.details_dialog, null);
@@ -150,67 +150,10 @@ public class MainActivity extends AppCompatActivity {
 
                     ListView detailsView = (ListView) dialogView.findViewById(R.id.detailsView);
 
-
                     DetailsAdapter adapter = new DetailsAdapter(listMap);
-
-                    //ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(MainActivity.this,
-                    //        R.array.category_array, android.R.layout.simple_list_item_1);
 
                     detailsView.setAdapter(adapter);
 
-
-                    /*final ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(MainActivity.this,
-                            R.array.category_array, android.R.layout.simple_list_item_1);
-
-                    ArrayList<HashMap<String,String>> listMap =  new ArrayList<HashMap<String, String>>();
-                    HashMap<String,String> map1 =new HashMap<String, String>();
-                    map1.put("title","Amdroid1");
-                    HashMap<String,String> map2 =new HashMap<String, String>();
-                    map2.put("title","Amdroid2");
-                    HashMap<String,String> map3 =new HashMap<String, String>();
-                    map3.put("title","Amdroid3");
-                    HashMap<String,String> map4 =new HashMap<String, String>();
-                    map4.put("title","Amdroid4");
-                    HashMap<String,String> map5 =new HashMap<String, String>();
-                    map5.put("title","Amdroid5");
-
-                    listMap.add(map1);
-                    listMap.add(map2);
-                    listMap.add(map3);
-                    listMap.add(map4);
-                    listMap.add(map5);
-
-                    ArrayList<String> listString = new ArrayList<String>();
-                    for(HashMap<String,String> row : listMap){
-                        listString.add(row.get("title"));
-                    }
-
-                    String[] array = listString.toArray(new String[listString.size()]);
-                    System.out.println("Lenght "+array.length);
-
-                    detailsBuilder.setNegativeButton(R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-
-                    detailsBuilder.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            CharSequence strName = arrayAdapter.getItem(which);
-                            AlertDialog.Builder builderInner = new AlertDialog.Builder(MainActivity.this);
-                            builderInner.setMessage(strName);
-                            builderInner.setTitle("Your Selected Item is");
-                            builderInner.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog,int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                            builderInner.show();
-                        }
-                    });*/
                     detailsBuilder.create();
                     detailsBuilder.show();
                 }
@@ -233,8 +176,6 @@ public class MainActivity extends AppCompatActivity {
 
                     Item editedItem = (Item) adapterView.getItemAtPosition(position);
 
-                    //Toast.makeText(getApplicationContext(), "selected Item Name is " + editedItem.getTitle(), Toast.LENGTH_LONG).show();
-
                     intent.putExtra("position", position);
                     intent.putExtra("title", editedItem.getTitle());
                     intent.putExtra("cost", editedItem.getCost());
@@ -244,17 +185,6 @@ public class MainActivity extends AppCompatActivity {
                     startActivityForResult(intent, 2);
                 }
             });
-
-            /*listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                    return true;
-
-                }
-
-            });*/
-
         }
 
     @Override
@@ -306,11 +236,11 @@ public class MainActivity extends AppCompatActivity {
             Log.i(TAG, "Entered onActivityResult()");
 
             // Check result code and request code
-            // if user submitted a new ToDoItem
-            // Create a new ToDoItem from the data Intent
+            // if user submitted a new Item
+            // Create a new Item from the data Intent
             // and then add it to the adapteR
             if (resultCode == RESULT_OK) {
-                if (requestCode == 1) {
+                if (requestCode == ADD_ITEM_REQUEST) {
                     Item newItem = new Item(data);
                     mAdapter.add(newItem);
                     listView.setSelection(mAdapter.getCount());
@@ -318,7 +248,7 @@ public class MainActivity extends AppCompatActivity {
                     totalCostUpdate();
                     budgetBarUpdate();
                 }
-                else if (requestCode == 2) {
+                else if (requestCode == EDIT_ITEM_REQUEST) {
                     int position = 0;
                     Item editedItem = new Item(data);
                     position = data.getIntExtra("position", 0);
@@ -359,24 +289,27 @@ public class MainActivity extends AppCompatActivity {
         protected void onStop() {
         super.onStop();
 
-        // Save Items
         saveItems();
-    }
+        }
 
         @Override
         protected void onDestroy() {
         super.onDestroy();
 
-        // Save Items
         saveItems();
-    }
+        }
 
+        @Override
+        protected void onPause() {
+            super.onPause();
+
+            saveItems();
+        }
         @Override
         public boolean onCreateOptionsMenu(Menu menu) {
             super.onCreateOptionsMenu(menu);
 
-            menu.add(Menu.NONE, MENU_DELETE, Menu.NONE, "Delete all");
-            menu.add(Menu.NONE, MENU_DUMP, Menu.NONE, "Dump to log");
+            menu.add(Menu.NONE, MENU_DELETE, Menu.NONE, R.string.delete_all);
             menu.add(Menu.NONE, MENU_BUDGET, Menu.NONE, R.string.set_budget);
             return true;
         }
@@ -385,16 +318,38 @@ public class MainActivity extends AppCompatActivity {
         public boolean onOptionsItemSelected(MenuItem item) {
             switch (item.getItemId()) {
                 case MENU_DELETE:
-                    mAdapter.clear();
-                    totalCostUpdate();
-                    budgetBarUpdate();
+
+                    AlertDialog.Builder deleteDialogBuilder = new AlertDialog.Builder(this);
+                    deleteDialogBuilder.setTitle(R.string.are_you_sure)
+                        .setMessage(R.string.cannot_undone)
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Do nothing but close the dialog
+                            mAdapter.clear();
+                            totalCostUpdate();
+                            budgetBarUpdate();
+                            dialog.dismiss();
+                        }
+                    })
+
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            // Do nothing
+                            dialog.dismiss();
+                        }
+                    });
+
+                    AlertDialog deleteDialog = deleteDialogBuilder.create();
+                    deleteDialog.show();
+
                     return true;
-                case MENU_DUMP:
-                    dump();
-                    return true;
+
                 case MENU_BUDGET:
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                    AlertDialog dialog;
+                    AlertDialog.Builder budgetDialogBuilder = new AlertDialog.Builder(this);
 
                     final EditText budgetEditText = new EditText(MainActivity.this);
                     budgetEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -404,7 +359,7 @@ public class MainActivity extends AppCompatActivity {
                     if (!settings.getString("budget", "0").equals("0")) {
                         budgetEditText.setText(settings.getString("budget", "0"));
                     }
-                    builder.setMessage(R.string.set_budget)
+                    budgetDialogBuilder.setMessage(R.string.set_budget)
                             .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     if(!budgetEditText.getText().toString().equals("")){
@@ -437,31 +392,25 @@ public class MainActivity extends AppCompatActivity {
                                     SharedPreferences.Editor editor = settings.edit();
                                     editor.putString("budget", budgetEditText.getText().toString());
                                     editor.apply();
+                                    dialog.dismiss();
                                 }
                             })
                             .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     // User cancelled the dialog
+                                    dialog.dismiss();
                                 }
                             })
                             .setView(budgetEditText);
 
                     // Create the AlertDialog object and return it
-                    dialog = builder.create();
-                    dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-                    dialog.show();
+                    AlertDialog budgetDialog = budgetDialogBuilder.create();
+                    budgetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+                    budgetDialog.show();
                     return true;
 
                 default:
                     return super.onOptionsItemSelected(item);
-            }
-        }
-
-        private void dump() {
-
-            for (int i = 0; i < mAdapter.getCount(); i++) {
-                String data = ((Item) mAdapter.getItem(i)).toLog();
-                Log.i(TAG,	"Item " + i + ": " + data.replace(Item.ITEM_SEP, ","));
             }
         }
 

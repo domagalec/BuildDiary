@@ -25,6 +25,11 @@
     <string name="save">Zapisz</string>
     <string name="set_budget">Ustaw budżet</string>
     <string name="ok">OK</string>
+    <string name="summary">Podsumowanie</string>
+    <string name="set">Ustaw</string>
+    <string name="are_you_sure">Czy na pewno?</string>
+    <string name="cannot_undone">Tej operacji nie można cofnąć</string>
+
 
     <string-array name="category_array">
         <item><string name="formalities">Formalności</string></item>

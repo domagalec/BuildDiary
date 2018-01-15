@@ -24,6 +24,11 @@
     <string name="show_details">Details</string>
     <string name="set_budget">Set your budget</string>
     <string name="ok">OK</string>
+    <string name="summary">Summary</string>
+    <string name="set">Set</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="cannot_undone">This action cannot be undone</string>
+
 
     <string-array name="category_array">
         <item><string name="formalities">Formalities</string></item>

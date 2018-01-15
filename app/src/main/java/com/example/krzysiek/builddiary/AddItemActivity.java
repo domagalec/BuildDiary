@@ -129,24 +129,6 @@ public class AddItemActivity extends AppCompatActivity {
             }
         });
 
-        // Set up OnClickListener for the Reset Button
-        final Button resetButton = (Button) findViewById(R.id.resetButton);
-        resetButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                // Reset data to default values
-              //  mPriorityRadioGroup.check(R.id.medPriority);
-               // mStatusRadioGroup.check(R.id.statusNotDone);
-                mTitleText.setText(null);
-                mCost.setText(null);
-
-                // reset date and time
-                setDefaultDateTime();
-
-            }
-        });
-
         // Set up OnClickListener for the Submit Button
 
         final Button submitButton = (Button) findViewById(R.id.submitButton);
