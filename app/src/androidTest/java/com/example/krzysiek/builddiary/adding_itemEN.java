@@ -39,7 +39,7 @@ public class adding_itemEN {
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void adding_item() {
+    public void add_item() {
 
         for (int i = 0; i <= 30; i++) {
             Log.i(TAG, String.valueOf(i));
