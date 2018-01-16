@@ -57,8 +57,6 @@ import java.util.Map;
 
 import static java.lang.Double.parseDouble;
 
-//import com.example.krzysiek.builddiary.Item.Status;
-
 public class MainActivity extends AppCompatActivity {
 
         private static final int ADD_ITEM_REQUEST = 1;
@@ -68,8 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
         // IDs for menu items
         private static final int MENU_DELETE = Menu.FIRST;
-        private static final int MENU_DUMP = Menu.FIRST + 1;
-        private static final int MENU_BUDGET = Menu.FIRST + 2;
+        private static final int MENU_BUDGET = Menu.FIRST + 1;
 
         ItemListAdapter mAdapter;
         TextView summaryView;
@@ -112,27 +109,20 @@ public class MainActivity extends AppCompatActivity {
                     final LinkedHashMap<String,String> listMap =  new LinkedHashMap<String, String>();
                     String catArr[] = getResources().getStringArray(R.array.category_array);
 
-                    for (int i = 0; i < catArr.length; i++) {
+                    for (String aCatArr : catArr) {
                         double categoryCost = 0.0;
 
-                        for (int j=0; j < mAdapter.getCount(); j++) {
+                        for (int j = 0; j < mAdapter.getCount(); j++) {
                             Item item = (Item) mAdapter.getItem(j);
-                            if (item.getCategory().equals(catArr[i])){
+                            if (item.getCategory().equals(aCatArr)) {
                                 categoryCost = categoryCost + item.getCost();
                             }
                         }
                         if (categoryCost != 0.0) {
-                            listMap.put(catArr[i], String.valueOf(new DecimalFormat("##.00").format(categoryCost)));
+                            listMap.put(aCatArr, String.valueOf(new DecimalFormat("##.00").format(categoryCost)));
                         }
-                        Log.i("TAG",catArr[i]);
+                        Log.i("TAG", aCatArr);
                     }
-
-
-                   /*() for (Map.Entry<String,String> entry : listMap.entrySet()) {
-                        String key = entry.getKey();
-                        String value = entry.getValue();
-                        Log.i("TAG", key + value);
-                    }*/
 
                     final AlertDialog.Builder detailsBuilder = new AlertDialog.Builder(MainActivity.this);
                     detailsBuilder.setTitle(R.string.summary);
@@ -171,7 +161,6 @@ public class MainActivity extends AppCompatActivity {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                   // Cursor cursor = (Cursor)adapterView.getItemAtPosition(position);
                     Intent intent = new Intent(MainActivity.this, EditItemActivity.class);
 
                     Item editedItem = (Item) adapterView.getItemAtPosition(position);
