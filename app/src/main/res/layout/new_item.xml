@@ -1,151 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_weight="1"
     android:fillViewport="true">
 
-
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:id="@+id/LinearLayout1"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:orientation="vertical">
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/RelativeLayout1"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_weight="1">
-
-    <TextView
-        android:id="@+id/TitleLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/item_name"
-        android:textAppearance="?android:attr/textAppearanceLarge">
-
-    </TextView>
-
-    <EditText
-        android:id="@+id/title"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/LinearLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/TitleLabel"
-        android:hint="@string/item_name"
-        android:inputType="textShortMessage">
+        android:orientation="vertical">
 
-        <requestFocus />
-    </EditText>
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/RelativeLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1">
 
-    <TextView
-        android:id="@+id/CostLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/title"
-        android:layout_marginTop="14dp"
-        android:text="@string/item_cost"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+            <TextView
+                android:id="@+id/TitleLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/item_name"
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
 
-    <EditText
-        android:id="@+id/cost"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/CostLabel"
-        android:ems="10"
-        android:hint="@string/item_cost"
-        android:inputType="numberDecimal"/>
+            <EditText
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/TitleLabel"
+                android:hint="@string/item_name"
+                android:inputType="textShortMessage">
+                <requestFocus />
+            </EditText>
 
-    <TextView
-        android:id="@+id/CategoryLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/cost"
-        android:layout_marginTop="14dp"
-        android:text="@string/item_category"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+            <TextView
+                android:id="@+id/CostLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/title"
+                android:layout_marginTop="14dp"
+                android:text="@string/item_cost"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <Spinner
-        android:id="@+id/category_spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/CategoryLabel" />
+            <EditText
+                android:id="@+id/cost"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/CostLabel"
+                android:ems="10"
+                android:hint="@string/item_cost"
+                android:inputType="numberDecimal"/>
 
-    <TextView
-        android:id="@+id/time_and_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/category_spinner"
-        android:layout_marginTop="14dp"
-        android:text="@string/item_date"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+            <TextView
+                android:id="@+id/CategoryLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/cost"
+                android:layout_marginTop="14dp"
+                android:text="@string/item_category"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <TextView
-        android:id="@+id/date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/time_and_date"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="12dp"
-        android:text="@string/item_date" />
+            <Spinner
+                android:id="@+id/category_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/CategoryLabel" />
 
-    <Button
-        android:id="@+id/date_picker_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/date"
-        android:layout_toRightOf="@id/date"
-        android:text="@string/set" />
+            <TextView
+                android:id="@+id/time_and_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/category_spinner"
+                android:layout_marginTop="14dp"
+                android:text="@string/item_date"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 
-</RelativeLayout>
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/time_and_date"
+                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/item_date" />
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/RelativeLayout2"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_weight="0"
-    android:background="@color/yellow"
-    android:orientation="vertical">
+            <Button
+                android:id="@+id/date_picker_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/date"
+                android:layout_toRightOf="@id/date"
+                android:layout_toEndOf="@id/date"
+                android:text="@string/set" />
 
-    <Button
-        android:id="@+id/cancelButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="5dp"
-        android:background="@color/yellow"
-        android:text="@string/cancel"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        </RelativeLayout>
 
-    <Button
-        android:id="@+id/submitButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/cancelButton"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="5dp"
-        android:background="@color/yellow"
-        android:text="@string/item_add"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/RelativeLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:background="@color/yellow"
+            android:orientation="vertical">
 
+            <Button
+                android:id="@+id/cancelButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:background="@color/yellow"
+                android:text="@string/cancel"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 
-</RelativeLayout>
+            <Button
+                android:id="@+id/submitButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/cancelButton"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
+                android:background="@color/yellow"
+                android:text="@string/item_add"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                tools:ignore="RelativeOverlap" />
 
-</LinearLayout>
+        </RelativeLayout>
+
+    </LinearLayout>
+
 </ScrollView>
