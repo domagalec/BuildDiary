@@ -1,4 +1,4 @@
-package com.example.krzysiek.builddiary;
+package com.kdomagala.builddiary;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class DetailsAdapter extends BaseAdapter {
-    private final ArrayList mData;
+    private final ArrayList<Map.Entry<String, String>> mData;
 
-    public DetailsAdapter(Map<String, String> map) {
-        mData = new ArrayList();
+    DetailsAdapter(Map<String, String> map) {
+        mData = new ArrayList<>();
         mData.addAll(map.entrySet());
     }
 
@@ -24,7 +24,7 @@ public class DetailsAdapter extends BaseAdapter {
 
     @Override
     public Map.Entry<String, String> getItem(int position) {
-        return (Map.Entry) mData.get(position);
+        return mData.get(position);
     }
 
     @Override

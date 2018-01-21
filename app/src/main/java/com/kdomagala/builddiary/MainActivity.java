@@ -1,40 +1,28 @@
-package com.example.krzysiek.builddiary;
+package com.kdomagala.builddiary;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ListActivity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ExpandableListView;
-import android.widget.ListPopupWindow;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -47,15 +35,8 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import static java.lang.Double.parseDouble;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -89,24 +70,24 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().setLogo(R.mipmap.ic_launcher);
             getSupportActionBar().setDisplayUseLogoEnabled(true);
 
-            // Create a new TodoListAdapter for this ListActivity's ListView
+            // Create a new ListAdapter for this ListActivity's ListView
             mAdapter = new ItemListAdapter(getApplicationContext());
 
             setContentView(R.layout.main);
 
-            summaryView = (TextView) findViewById(R.id.summaryView);
-            listView = (ListView) findViewById(R.id.listView);
+            summaryView = findViewById(R.id.summaryView);
+            listView = findViewById(R.id.listView);
             listView.setAdapter(mAdapter);
             registerForContextMenu(listView);
-            budgetBar = (ProgressBar) findViewById(R.id.budgetBar);
-            percentView = (TextView) findViewById(R.id.percentView);
+            budgetBar = findViewById(R.id.budgetBar);
+            percentView = findViewById(R.id.percentView);
 
             showDetails = (Button) findViewById(R.id.ShowDetails);
             showDetails.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                    final LinkedHashMap<String,String> listMap =  new LinkedHashMap<String, String>();
+                    final LinkedHashMap<String,String> listMap =  new LinkedHashMap<>();
                     String catArr[] = getResources().getStringArray(R.array.category_array);
 
                     for (String aCatArr : catArr) {
@@ -138,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
 
-                    ListView detailsView = (ListView) dialogView.findViewById(R.id.detailsView);
+                    ListView detailsView = dialogView.findViewById(R.id.detailsView);
 
                     DetailsAdapter adapter = new DetailsAdapter(listMap);
 
@@ -149,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-            addButton = (Button) findViewById(R.id.addbutton);
+            addButton = findViewById(R.id.addbutton);
             addButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -179,23 +160,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onCreateContextMenu(ContextMenu menu,View v, ContextMenu.ContextMenuInfo menuInfo){
         if (v.getId() == R.id.listView){
-            AdapterView.AdapterContextMenuInfo info =(AdapterView.AdapterContextMenuInfo)menuInfo;
-            MenuItem mnu1=menu.add(0,0,0,R.string.menu_edit);
-            MenuItem mnu2=menu.add(0,1,1,R.string.menu_delete);
+            menu.add(0,0,0,R.string.menu_edit);
+            menu.add(0,1,1,R.string.menu_delete);
         }
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem menuItem){
         AdapterView.AdapterContextMenuInfo info=(AdapterView.AdapterContextMenuInfo)menuItem.getMenuInfo();
-        int position = ((AdapterView.AdapterContextMenuInfo)info).position;
+        int position = info.position;
 
         switch (menuItem.getItemId()) {
             case 0:
                 Intent intent = new Intent(MainActivity.this, EditItemActivity.class);
                 Item editedItem = (Item) listView.getItemAtPosition(position);
-
-                //Toast.makeText(getApplicationContext(), "selected Item Name is " + editedItem.getTitle(), Toast.LENGTH_LONG).show();
 
                 intent.putExtra("position", position);
                 intent.putExtra("title", editedItem.getTitle());
@@ -205,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
 
                 startActivityForResult(intent, 2);
                 break;
+
             case 1:
                 mAdapter.remove(position);
                 totalCostUpdate();
@@ -224,10 +203,8 @@ public class MainActivity extends AppCompatActivity {
 
             Log.i(TAG, "Entered onActivityResult()");
 
-            // Check result code and request code
-            // if user submitted a new Item
-            // Create a new Item from the data Intent
-            // and then add it to the adapteR
+            // Check result code and request code if user submitted a new Item
+            // Create a new Item from the data Intent and then add it to the adapter
             if (resultCode == RESULT_OK) {
                 if (requestCode == ADD_ITEM_REQUEST) {
                     Item newItem = new Item(data);
@@ -238,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
                     budgetBarUpdate();
                 }
                 else if (requestCode == EDIT_ITEM_REQUEST) {
-                    int position = 0;
+                    int position;
                     Item editedItem = new Item(data);
                     position = data.getIntExtra("position", 0);
                     mAdapter.edit(editedItem, position);
@@ -260,7 +237,6 @@ public class MainActivity extends AppCompatActivity {
                 totalCostUpdate();
                 budgetBarUpdate();
         }
-
 
         @Override
         public void onStart() {
@@ -294,6 +270,7 @@ public class MainActivity extends AppCompatActivity {
 
             saveItems();
         }
+
         @Override
         public boolean onCreateOptionsMenu(Menu menu) {
             super.onCreateOptionsMenu(menu);
@@ -314,7 +291,6 @@ public class MainActivity extends AppCompatActivity {
                         .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 
                         public void onClick(DialogInterface dialog, int which) {
-                            // Do nothing but close the dialog
                             mAdapter.clear();
                             totalCostUpdate();
                             budgetBarUpdate();
@@ -326,7 +302,6 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-
                             // Do nothing
                             dialog.dismiss();
                         }
@@ -342,7 +317,6 @@ public class MainActivity extends AppCompatActivity {
 
                     final EditText budgetEditText = new EditText(MainActivity.this);
                     budgetEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
                     budgetEditText.setSelectAllOnFocus(true);
                     SharedPreferences settings = getSharedPreferences("preferences", MODE_PRIVATE);
                     if (!settings.getString("budget", "0").equals("0")) {
@@ -353,15 +327,18 @@ public class MainActivity extends AppCompatActivity {
                                 public void onClick(DialogInterface dialog, int id) {
                                     if(!budgetEditText.getText().toString().equals("")){
                                         double budget = Double.parseDouble(budgetEditText.getText().toString());
+                                        String percent;
                                         if (budget>0){
                                             if ((int) Math.round(getTotalCost()*100/budget) <=100) {
                                                 budgetBar.setProgress((int) Math.round(getTotalCost() * 100 / budget));
-                                                percentView.setText(String.valueOf((int) Math.round(getTotalCost() * 100 / budget))+ "%");
+                                                percent = String.valueOf((int) Math.round(getTotalCost() * 100 / budget))+ "%";
+                                                percentView.setText(percent);
                                                 percentView.setTextColor(Color.BLACK);
                                             }
                                             else {
                                                 budgetBar.setProgress(100);
-                                                percentView.setText(String.valueOf((int) Math.round(getTotalCost() * 100 / budget))+ "%");
+                                                percent = String.valueOf((int) Math.round(getTotalCost() * 100 / budget))+ "%";
+                                                percentView.setText(percent);
                                                 percentView.setTextColor(Color.RED);
                                             }
                                         }
@@ -410,18 +387,16 @@ public class MainActivity extends AppCompatActivity {
                 FileInputStream fis = openFileInput(FILE_NAME);
                 reader = new BufferedReader(new InputStreamReader(fis));
 
-                String title = null;
-                String cost = null;
-                //String status = null;
-                Date date = null;
-                String category = null;
+                String title;
+                String cost;
+                Date date;
+                String category;
 
                 while (null != (title = reader.readLine())) {
                     cost = reader.readLine();
-                    //status = reader.readLine();
                     date = Item.FORMAT.parse(reader.readLine());
                     category = reader.readLine();
-                    mAdapter.add(new Item(title, Double.valueOf(cost) /*Status.valueOf(status)*/, date, category));
+                    mAdapter.add(new Item(title, Double.valueOf(cost), date, category));
 
                 }
                 listView.setSelection(mAdapter.getCount());
@@ -492,21 +467,22 @@ public class MainActivity extends AppCompatActivity {
         public void budgetBarUpdate(){
             SharedPreferences settings = getSharedPreferences("preferences", MODE_PRIVATE);
             settings.getString("budget", "0");
-            Double total = getTotalCost();
-            //Toast.makeText(MainActivity.this, String.valueOf(total), Toast.LENGTH_SHORT).show();
 
             if(!settings.getString("budget", "0").equals("")){
                 double budget = Double.parseDouble(settings.getString("budget", "0"));
                 if (budget>0){
+                    String percent;
                     if ((int) Math.round(getTotalCost()*100/budget) <=100) {
                         budgetBar.setProgress((int) Math.round(getTotalCost() * 100 / budget));
-                        percentView.setText(String.valueOf((int) Math.round(getTotalCost() * 100 / budget))+ "%");
+                        percent = String.valueOf((int) Math.round(getTotalCost() * 100 / budget))+ "%";
+                        percentView.setText(percent);
                         percentView.setTextColor(Color.BLACK);
 
                 }
                     else {
                         budgetBar.setProgress(100);
-                        percentView.setText(String.valueOf((int) Math.round(getTotalCost() * 100 / budget))+ "%");
+                        percent = String.valueOf((int) Math.round(getTotalCost() * 100 / budget))+ "%";
+                        percentView.setText(percent);
                         percentView.setTextColor(Color.RED);                    }
                 }
                 else {

@@ -1,6 +1,5 @@
-package com.example.krzysiek.builddiary;
+package com.kdomagala.builddiary;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -8,41 +7,32 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
-//import com.example.krzysiek.builddiary.Item.Status;
 
-
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class AddItemActivity extends AppCompatActivity {
+public class EditItemActivity extends AppCompatActivity {
 
     private static final String TAG = "BuildDiary";
-
-    private static String timeString;
     private static String dateString;
-    private static TextView dateView;
-    private static TextView timeView;
-
+    private TextView dateView;
     private Date mDate;
-    private RadioGroup mPriorityRadioGroup;
-    private RadioGroup mStatusRadioGroup;
     private EditText mTitleText;
     private EditText mCost;
-    private RadioButton mDefaultStatusButton;
-    private RadioButton mDefaultPriorityButton;
     private Spinner mCategorySpinner;
 
 
@@ -56,9 +46,31 @@ public class AddItemActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         setContentView(R.layout.new_item);
 
-        mTitleText = (EditText) findViewById(R.id.title);
-        mCost = (EditText) findViewById(R.id.cost);
-        mCategorySpinner = (Spinner) findViewById(R.id.category_spinner);
+        Intent i = getIntent();
+        final int position = i.getIntExtra("position", 0);
+        Double cost = i.getDoubleExtra("cost", 0);
+        String category = i.getStringExtra("category");
+        Log.i(TAG, "dateString: " + dateString);
+        Date date = (Date) i.getSerializableExtra("date");
+        Log.i(TAG, "date: " + date.toString());
+
+        mTitleText = findViewById(R.id.title);
+        mTitleText.setText(i.getStringExtra("title"));
+        mTitleText.setSelection(mTitleText.getText().length());
+
+        mCost = findViewById(R.id.cost);
+
+        if (cost == 0) {
+            mCost.setText(new DecimalFormat("0.00").format(cost));
+            String newcost = String.valueOf(mCost.getText());
+            mCost.setText(newcost.replace(',', '.'));
+
+        } else {
+            mCost.setText(new DecimalFormat("##.00").format(cost));
+            String newcost = String.valueOf(mCost.getText());
+            mCost.setText(newcost.replace(',', '.'));
+        }
+        mCategorySpinner = findViewById(R.id.category_spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.category_array, android.R.layout.simple_spinner_item);
@@ -67,59 +79,48 @@ public class AddItemActivity extends AppCompatActivity {
         // Apply the adapter to the spinner
         mCategorySpinner.setAdapter(adapter);
 
+        mCategorySpinner.setSelection(getIndex(mCategorySpinner, category));
+
         mCategorySpinner.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 InputMethodManager imm=(InputMethodManager)getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                if (getCurrentFocus() != null)
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                 return false;
             }
         }) ;
 
-        //mDefaultStatusButton = (RadioButton) findViewById(R.id.statusNotDone);
-        //mDefaultPriorityButton = (RadioButton) findViewById(R.id.medPriority);
-        //mPriorityRadioGroup = (RadioGroup) findViewById(R.id.priorityGroup);
-        //mStatusRadioGroup = (RadioGroup) findViewById(R.id.statusGroup);
-        dateView = (TextView) findViewById(R.id.date);
-        timeView = (TextView) findViewById(R.id.time);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
+        dateView = findViewById(R.id.date);
+        dateView.setText(Item.FORMAT.format(date));
 
         // Set the date and time
 
-        setDefaultDateTime();
+        setNoChangeDate(date);
 
         // OnClickListener for the Date button, calls showDatePickerDialog() to
         // show the Date dialog
 
-        final Button datePickerButton = (Button) findViewById(R.id.date_picker_button);
+        final Button datePickerButton = findViewById(R.id.date_picker_button);
         datePickerButton.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 InputMethodManager inputManager = (InputMethodManager)
                         getSystemService(Context.INPUT_METHOD_SERVICE);
-
-                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                if (getCurrentFocus() != null)
+                    inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                         InputMethodManager.HIDE_NOT_ALWAYS);
                 showDatePickerDialog();
             }
         });
 
-        // OnClickListener for the Time button, calls showTimePickerDialog() to
-        // show the Time Dialog
-
-      /*  final Button timePickerButton = (Button) findViewById(R.id.time_picker_button);
-        timePickerButton.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                showTimePickerDialog();
-            }
-        });*/
-
         // OnClickListener for the Cancel Button,
 
-        final Button cancelButton = (Button) findViewById(R.id.cancelButton);
+        final Button cancelButton = findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,15 +132,17 @@ public class AddItemActivity extends AppCompatActivity {
 
         // Set up OnClickListener for the Submit Button
 
-        final Button submitButton = (Button) findViewById(R.id.submitButton);
+        final Button submitButton = findViewById(R.id.submitButton);
+        submitButton.setText(R.string.save);
         submitButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mTitleText.getText().toString().equals("")){
-                    Toast.makeText(AddItemActivity.this,R.string.missing_title_toast,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditItemActivity.this,R.string.missing_title_toast,Toast.LENGTH_SHORT).show();
                 }
-                else{
-                    // Gather Item data
+                else {
+                    // gather Item data
+
                     // Get the current cost
                     Double cost;
                     if(mCost.getText().toString().equals("")||mCost.getText().toString().equals(".")||mCost.getText().toString().equals(",")){
@@ -150,6 +153,7 @@ public class AddItemActivity extends AppCompatActivity {
                     }
 
                     // Get the current Item Title
+
                     String titleString = getToDoTitle();
 
                     String category = getCategory();
@@ -158,38 +162,31 @@ public class AddItemActivity extends AppCompatActivity {
                     String fullDate = dateString;
 
                     // Package Item data into an Intent
-                    Intent data = new Intent();
-                    Item.packageIntent(data, titleString, cost, fullDate, category);
+                    Intent editedData = new Intent();
+                    Item.packageIntent(editedData, titleString, cost, fullDate, category);
 
+                    editedData.putExtra("position", position);
                     // return data Intent and finish
 
-                    setResult(RESULT_OK, data);
+                    setResult(RESULT_OK, editedData);
                     finish();
                 }
             }
         });
     }
 
-    // Do not modify below this point.
-
-    private void setDefaultDateTime() {
-
-        // Default is current time
+    private void setNoChangeDate(Date date) {
         mDate = new Date();
-        mDate = new Date(mDate.getTime());
+        mDate = date;
 
-        Calendar c = Calendar.getInstance();
-        c.setTime(mDate);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
 
-        setDateString(c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.MONTH),
-                c.get(Calendar.YEAR));
-
+        setDateString(day,month,year);
         dateView.setText(dateString);
-
-        //setTimeString(c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE),
-        //        c.get(Calendar.MILLISECOND));
-
-        //timeView.setText(timeString);
     }
 
     private static void setDateString(int dayOfMonth, int monthOfYear, int year) {
@@ -207,47 +204,11 @@ public class AddItemActivity extends AppCompatActivity {
         dateString = day + "-" + mon + "-" + year;
     }
 
-   /* private static void setTimeString(int hourOfDay, int minute, int mili) {
-        String hour = "" + hourOfDay;
-        String min = "" + minute;
-
-        if (hourOfDay < 10)
-            hour = "0" + hourOfDay;
-        if (minute < 10)
-            min = "0" + minute;
-
-        timeString = hour + ":" + min + ":00";
-    }*/
-
     private Double getCost() {return Double.valueOf(mCost.getText().toString());}
 
-
-    /*{return mCost.getText().toString();
-
-       /* switch (mPriorityRadioGroup.getCheckedRadioButtonId()) {
-            case R.id.lowPriority: {
-                return Priority.LOW;
-            }
-            case R.id.highPriority: {
-                return Priority.HIGH;
-            }
-            default: {
-                return Priority.MED;
-            }
-        }*/
-
-    /*private Status getStatus() {
-
-       // switch (mStatusRadioGroup.getCheckedRadioButtonId()) {
-       //     case R.id.statusDone: {
-                return Status.DONE;
-        //    }
-        //    default: {
-        //        return Status.NOTDONE;
-        //    }
-        }*/
-
-    private String getToDoTitle() {return mTitleText.getText().toString();}
+    private String getToDoTitle() {
+        return mTitleText.getText().toString();
+    }
 
     private String getCategory() {return mCategorySpinner.getSelectedItem().toString();}
 
@@ -271,44 +232,30 @@ public class AddItemActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        public void onDateSet(DatePicker view, int year, int monthOfYear,
+                              int dayOfMonth) {
             setDateString(dayOfMonth, monthOfYear, year);
-
+            TextView dateView = getActivity().findViewById(R.id.date);
             dateView.setText(dateString);
         }
     }
 
-    // DialogFragment used to pick a ToDoItem deadline time
-
-   /* public static class TimePickerFragment extends DialogFragment implements
-            TimePickerDialog.OnTimeSetListener {
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-
-            // Use the current time as the default values for the picker
-            final Calendar c = Calendar.getInstance();
-            int hour = c.get(Calendar.HOUR_OF_DAY);
-            int minute = c.get(Calendar.MINUTE);
-
-            // Create a new instance of TimePickerDialog and return
-            return new TimePickerDialog(getActivity(), this, hour, minute, true);
-        }
-
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            setTimeString(hourOfDay, minute, 0);
-
-            timeView.setText(timeString);
-        }
-    }
-*/
     private void showDatePickerDialog() {
         DialogFragment newFragment = new DatePickerFragment();
         newFragment.show(getFragmentManager(), "datePicker");
     }
 
- /*   private void showTimePickerDialog() {
-        DialogFragment newFragment = new TimePickerFragment();
-        newFragment.show(getFragmentManager(), "timePicker");
-    }*/
+    private int getIndex(Spinner spinner, String myString)
+    {
+        int index = 0;
+
+        for (int i=0;i<spinner.getCount();i++){
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(myString)){
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
+
 }

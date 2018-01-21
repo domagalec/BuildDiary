@@ -1,6 +1,5 @@
-package com.example.krzysiek.builddiary;
+package com.kdomagala.builddiary;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -8,46 +7,35 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
-//import com.example.krzysiek.builddiary.Item.Status;
 
-
-import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
-public class EditItemActivity extends AppCompatActivity {
+public class AddItemActivity extends AppCompatActivity {
 
     private static final String TAG = "BuildDiary";
-
     private static String dateString;
-    private static TextView dateView;
-
+    private TextView dateView;
     private Date mDate;
     private EditText mTitleText;
     private EditText mCost;
     private Spinner mCategorySpinner;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if(getSupportActionBar() != null){
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
@@ -55,32 +43,10 @@ public class EditItemActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         setContentView(R.layout.new_item);
 
-        Intent i = getIntent();
-        final int position = i.getIntExtra("position", 0);
-        Double cost = i.getDoubleExtra("cost", 0);
-        String category = i.getStringExtra("category");
-//        dateString = i.getStringExtra("date");
-        Log.i(TAG, "dateString: " + dateString);
-        Date date = (Date) i.getSerializableExtra("date");
-        Log.i(TAG, "date: " + date.toString());
+        mTitleText = findViewById(R.id.title);
+        mCost = findViewById(R.id.cost);
+        mCategorySpinner = findViewById(R.id.category_spinner);
 
-        mTitleText = (EditText) findViewById(R.id.title);
-        mTitleText.setText(i.getStringExtra("title"));
-        mTitleText.setSelection(mTitleText.getText().length());
-        // mTitleText.setText(Item.FORMAT.format(date));
-
-        mCost = (EditText) findViewById(R.id.cost);
-        if (cost == 0) {
-            mCost.setText(new DecimalFormat("0.00").format(cost));
-            String newcost = String.valueOf(mCost.getText());
-            mCost.setText(newcost.replace(',', '.'));
-
-        } else {
-            mCost.setText(new DecimalFormat("##.00").format(cost));
-            String newcost = String.valueOf(mCost.getText());
-            mCost.setText(newcost.replace(',', '.'));
-        }
-        mCategorySpinner = (Spinner) findViewById(R.id.category_spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.category_array, android.R.layout.simple_spinner_item);
@@ -89,41 +55,35 @@ public class EditItemActivity extends AppCompatActivity {
         // Apply the adapter to the spinner
         mCategorySpinner.setAdapter(adapter);
 
-        mCategorySpinner.setSelection(getIndex(mCategorySpinner, category));
-          //  int spinnerPosition = adapter.getPosition(category);
-          //  mCategorySpinner.setSelection(spinnerPosition);
-
         mCategorySpinner.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 InputMethodManager imm=(InputMethodManager)getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                if (getCurrentFocus() != null)
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                 return false;
             }
         }) ;
 
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-
-        dateView = (TextView) findViewById(R.id.date);
-        dateView.setText(Item.FORMAT.format(date));
+        dateView = findViewById(R.id.date);
 
         // Set the date and time
 
-        setNoChangeDate(date);
+        setDefaultDateTime();
 
         // OnClickListener for the Date button, calls showDatePickerDialog() to
         // show the Date dialog
 
-        final Button datePickerButton = (Button) findViewById(R.id.date_picker_button);
+        final Button datePickerButton = findViewById(R.id.date_picker_button);
         datePickerButton.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 InputMethodManager inputManager = (InputMethodManager)
                         getSystemService(Context.INPUT_METHOD_SERVICE);
-
-                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                if (getCurrentFocus() != null)
+                   inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                         InputMethodManager.HIDE_NOT_ALWAYS);
                 showDatePickerDialog();
             }
@@ -131,7 +91,7 @@ public class EditItemActivity extends AppCompatActivity {
 
         // OnClickListener for the Cancel Button,
 
-        final Button cancelButton = (Button) findViewById(R.id.cancelButton);
+        final Button cancelButton = findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,17 +103,15 @@ public class EditItemActivity extends AppCompatActivity {
 
         // Set up OnClickListener for the Submit Button
 
-        final Button submitButton = (Button) findViewById(R.id.submitButton);
-        submitButton.setText(R.string.save);
+        final Button submitButton = findViewById(R.id.submitButton);
         submitButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mTitleText.getText().toString().equals("")){
-                    Toast.makeText(EditItemActivity.this,R.string.missing_title_toast,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddItemActivity.this,R.string.missing_title_toast,Toast.LENGTH_SHORT).show();
                 }
-                else {
-                    // gather Item data
-
+                else{
+                    // Gather Item data
                     // Get the current cost
                     Double cost;
                     if(mCost.getText().toString().equals("")||mCost.getText().toString().equals(".")||mCost.getText().toString().equals(",")){
@@ -162,11 +120,8 @@ public class EditItemActivity extends AppCompatActivity {
                     else {
                         cost = getCost();
                     }
-                    // Get the current Status
-                    //Status status = getStatus();
 
                     // Get the current Item Title
-
                     String titleString = getToDoTitle();
 
                     String category = getCategory();
@@ -175,31 +130,16 @@ public class EditItemActivity extends AppCompatActivity {
                     String fullDate = dateString;
 
                     // Package Item data into an Intent
-                    Intent editedData = new Intent();
-                    Item.packageIntent(editedData, titleString, cost, fullDate, category);
+                    Intent data = new Intent();
+                    Item.packageIntent(data, titleString, cost, fullDate, category);
 
-                    editedData.putExtra("position", position);
                     // return data Intent and finish
 
-                    setResult(RESULT_OK, editedData);
+                    setResult(RESULT_OK, data);
                     finish();
                 }
             }
         });
-    }
-
-    private void setNoChangeDate(Date date) {
-        mDate = new Date();
-        mDate = date;
-
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-
-        setDateString(day,month,year);
-        dateView.setText(dateString);
     }
 
     private void setDefaultDateTime() {
@@ -216,31 +156,7 @@ public class EditItemActivity extends AppCompatActivity {
 
         dateView.setText(dateString);
 
-        //setTimeString(c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE),
-        //        c.get(Calendar.MILLISECOND));
-
-        //timeView.setText(timeString);
     }
-
-    /*private void setEditDateTime() {
-
-        // Default is current time
-        mDate = new Date();
-        mDate = new Date(mDate.getTime());
-
-        Calendar c = Calendar.getInstance();
-        c.setTime(mDate);
-
-        setDateString(c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.MONTH),
-                c.get(Calendar.YEAR));
-
-        dateView.setText(dateString);
-
-        //setTimeString(c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE),
-        //        c.get(Calendar.MILLISECOND));
-
-        //timeView.setText(timeString);
-    }*/
 
     private static void setDateString(int dayOfMonth, int monthOfYear, int year) {
 
@@ -257,52 +173,13 @@ public class EditItemActivity extends AppCompatActivity {
         dateString = day + "-" + mon + "-" + year;
     }
 
-   /* private static void setTimeString(int hourOfDay, int minute, int mili) {
-        String hour = "" + hourOfDay;
-        String min = "" + minute;
-
-        if (hourOfDay < 10)
-            hour = "0" + hourOfDay;
-        if (minute < 10)
-            min = "0" + minute;
-
-        timeString = hour + ":" + min + ":00";
-    }*/
-
     private Double getCost() {return Double.valueOf(mCost.getText().toString());}
 
-    /*{return mCost.getText().toString();
-
-       /* switch (mPriorityRadioGroup.getCheckedRadioButtonId()) {
-            case R.id.lowPriority: {
-                return Priority.LOW;
-            }
-            case R.id.highPriority: {
-                return Priority.HIGH;
-            }
-            default: {
-                return Priority.MED;
-            }
-        }*/
-
-    /*private Status getStatus() {
-
-       // switch (mStatusRadioGroup.getCheckedRadioButtonId()) {
-       //     case R.id.statusDone: {
-                return Status.DONE;
-        //    }
-        //    default: {
-        //        return Status.NOTDONE;
-        //    }
-        }*/
-
-    private String getToDoTitle() {
-        return mTitleText.getText().toString();
-    }
+    private String getToDoTitle() {return mTitleText.getText().toString();}
 
     private String getCategory() {return mCategorySpinner.getSelectedItem().toString();}
 
-    // DialogFragment used to pick a ToDoItem deadline date
+    // DialogFragment used to pick a Item date
 
     public static class DatePickerFragment extends DialogFragment implements
             DatePickerDialog.OnDateSetListener {
@@ -322,10 +199,9 @@ public class EditItemActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear,
-                              int dayOfMonth) {
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             setDateString(dayOfMonth, monthOfYear, year);
-
+            TextView dateView = getActivity().findViewById(R.id.date);
             dateView.setText(dateString);
         }
     }
@@ -335,17 +211,6 @@ public class EditItemActivity extends AppCompatActivity {
         newFragment.show(getFragmentManager(), "datePicker");
     }
 
-    private int getIndex(Spinner spinner, String myString)
-    {
-        int index = 0;
 
-        for (int i=0;i<spinner.getCount();i++){
-            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(myString)){
-                index = i;
-                break;
-            }
-        }
-        return index;
-    }
 
 }

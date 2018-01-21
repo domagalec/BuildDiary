@@ -1,4 +1,4 @@
-package com.example.krzysiek.builddiary;
+package com.kdomagala.builddiary;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -10,15 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class ItemListAdapter extends BaseAdapter {
 
-    private final List<Item> mItems = new ArrayList<Item>();
+    private final List<Item> mItems = new ArrayList<>();
     private final Context mContext;
 
     private static final String TAG = "BuildDiary";
@@ -95,14 +92,11 @@ public class ItemListAdapter extends BaseAdapter {
         // Get the current Item
         final Item item = (Item) getItem(position);
 
-        // Inflate the View for this Item
-        // from todo_item.xml
+        // Inflate the View for this Item from xml
         LayoutInflater mInflater = LayoutInflater.from(mContext); // context pass to the constructor of adapter
         convertView = mInflater.inflate(R.layout.item_view, parent, false);
 
-        //LinearLayout itemLayout = (LinearLayout)convertView.findViewById(R.id.LinearLayout1);
-
-        RelativeLayout itemLayout = (RelativeLayout)convertView.findViewById(R.id.RelativeLayout1);
+        RelativeLayout itemLayout = convertView.findViewById(R.id.RelativeLayout1);
 
         // Fill in specific Item data
         // Remember that the data that goes in this View
@@ -110,33 +104,11 @@ public class ItemListAdapter extends BaseAdapter {
         // in the layout file
 
         // Display Title in TextView
-        final TextView titleView = (TextView) itemLayout.findViewById(R.id.titleView);
+        final TextView titleView =  itemLayout.findViewById(R.id.titleView);
         titleView.setText(item.getTitle());
 
-        //Set up Status CheckBox
-        /*final CheckBox statusView = (CheckBox) itemLayout.findViewById(R.id.statusCheckBox);
-        if (item.getStatus()== Item.Status.DONE) {
-            statusView.setChecked(true);
-        }*/
-
-        // Must also set up an OnCheckedChangeListener,
-        // which is called when the user toggles the status checkbox
-
-        /*statusView.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,
-                                         boolean isChecked) {
-                if (Item.getStatus()==Item.Status.DONE){
-                    Item.setStatus(Item.Status.NOTDONE);
-                }
-                else{
-                    Item.setStatus(Item.Status.DONE);
-                }
-            }
-        });*/
-
         // Display Cost in a TextView
-        final TextView costView = (TextView) itemLayout.findViewById(R.id.costView);
+        final TextView costView = itemLayout.findViewById(R.id.costView);
         if (item.getCost() == 0){
             costView.setText(new DecimalFormat("0.00").format(item.getCost()));
         }
@@ -145,16 +117,16 @@ public class ItemListAdapter extends BaseAdapter {
         }
 
         //Display Category in a TextView
-        final TextView categoryView = (TextView) itemLayout.findViewById(R.id.categoryView);
+        final TextView categoryView = itemLayout.findViewById(R.id.categoryView);
         categoryView.setText(item.getCategory());
 
         // Display Time and Date.
         // Hint - use ToDoItem.FORMAT.format(toDoItem.getDate()) to get date and
         // time String
-        final TextView dateView = (TextView) itemLayout.findViewById(R.id.dateView);
+        final TextView dateView = itemLayout.findViewById(R.id.dateView);
         dateView.setText(Item.FORMAT.format(item.getDate()));
 
-        // Return the View you just created
+        // Return the created View
         return itemLayout;
 
     }

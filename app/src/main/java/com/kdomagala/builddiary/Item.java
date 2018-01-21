@@ -1,4 +1,4 @@
-package com.example.krzysiek.builddiary;
+package com.kdomagala.builddiary;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
