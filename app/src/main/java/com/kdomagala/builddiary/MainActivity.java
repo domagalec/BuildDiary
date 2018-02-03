@@ -24,6 +24,9 @@ import android.widget.TextView;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.MobileAds;
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
@@ -39,6 +42,8 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 
 public class MainActivity extends AppCompatActivity {
+
+        private FirebaseAnalytics mFirebaseAnalytics;
 
         private static final int ADD_ITEM_REQUEST = 1;
         private static final int EDIT_ITEM_REQUEST = 2;
@@ -60,6 +65,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+
+            //TODO - CHANGE AD ID in item_view.xml
+
+            MobileAds.initialize(this, "ca-app-pub-6481645071930655~1866390299");
+            mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
             SharedPreferences settings = getSharedPreferences("preferences", MODE_PRIVATE);
             settings.getString("budget", "0");

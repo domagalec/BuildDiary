@@ -1,5 +1,9 @@
 package com.kdomagala.builddiary;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -32,7 +36,7 @@ public class AddItemActivity extends AppCompatActivity {
     private EditText mCost;
     private Spinner mCategorySpinner;
 
-    @Override
+    private AdView mAdView;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -42,6 +46,11 @@ public class AddItemActivity extends AppCompatActivity {
         getSupportActionBar().setLogo(R.mipmap.ic_launcher);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         setContentView(R.layout.new_item);
+
+
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         mTitleText = findViewById(R.id.title);
         mCost = findViewById(R.id.cost);

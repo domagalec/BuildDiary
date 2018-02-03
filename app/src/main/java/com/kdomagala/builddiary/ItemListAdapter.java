@@ -71,8 +71,7 @@ public class ItemListAdapter extends BaseAdapter {
         return mItems.get(pos);
     }
 
-    // Get the ID for the ToDoItem
-    // In this case it's just the position
+    // Get the position for the Item
 
     @Override
     public long getItemId(int pos) {
@@ -86,48 +85,66 @@ public class ItemListAdapter extends BaseAdapter {
     // Consider using the ViewHolder pattern to make scrolling more efficient
     // See: http://developer.android.com/training/improving-layouts/smooth-scrolling.html
 
+    private static class ViewHolder {
+        RelativeLayout itemLayout;
+        TextView titleView;
+        TextView categoryView;
+        TextView costView;
+        TextView dateView;
+
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
+        View row = convertView;
+
+        ViewHolder holder;
+        if(row == null) {
+
+            // Inflate the View for this Item from xml
+            LayoutInflater mInflater = LayoutInflater.from(mContext); // context pass to the constructor of adapter
+            row = mInflater.inflate(R.layout.item_view, parent, false);
+            //Now create the ViewHolder
+            holder = new ViewHolder();
+            //and set its textView field to the proper value
+            holder.itemLayout =  row.findViewById(R.id.RelativeLayout1);
+            holder.titleView = row.findViewById(R.id.titleView);
+            holder.costView = row.findViewById(R.id.costView);
+            holder.categoryView = row.findViewById(R.id.categoryView);
+            holder.dateView = row.findViewById(R.id.dateView);
+
+            //and store it as the 'tag' of our view
+            row.setTag(holder);
+        } else {
+            //We've already seen this one before!
+            holder = (ViewHolder) row.getTag();
+        }
 
         // Get the current Item
         final Item item = (Item) getItem(position);
 
-        // Inflate the View for this Item from xml
-        LayoutInflater mInflater = LayoutInflater.from(mContext); // context pass to the constructor of adapter
-        convertView = mInflater.inflate(R.layout.item_view, parent, false);
-
-        RelativeLayout itemLayout = convertView.findViewById(R.id.RelativeLayout1);
-
         // Fill in specific Item data
-        // Remember that the data that goes in this View
-        // corresponds to the user interface elements defined
-        // in the layout file
 
         // Display Title in TextView
-        final TextView titleView =  itemLayout.findViewById(R.id.titleView);
-        titleView.setText(item.getTitle());
+        holder.titleView.setText(item.getTitle());
 
         // Display Cost in a TextView
-        final TextView costView = itemLayout.findViewById(R.id.costView);
         if (item.getCost() == 0){
-            costView.setText(new DecimalFormat("0.00").format(item.getCost()));
+            holder.costView.setText(new DecimalFormat("0.00").format(item.getCost()));
         }
         else {
-            costView.setText(new DecimalFormat("##.00").format(item.getCost()));
+            holder.costView.setText(new DecimalFormat("##.00").format(item.getCost()));
         }
 
         //Display Category in a TextView
-        final TextView categoryView = itemLayout.findViewById(R.id.categoryView);
-        categoryView.setText(item.getCategory());
+        holder.categoryView.setText(item.getCategory());
 
         // Display Time and Date.
-        // Hint - use ToDoItem.FORMAT.format(toDoItem.getDate()) to get date and
-        // time String
-        final TextView dateView = itemLayout.findViewById(R.id.dateView);
-        dateView.setText(Item.FORMAT.format(item.getDate()));
+        holder.dateView.setText(Item.FORMAT.format(item.getDate()));
 
         // Return the created View
-        return itemLayout;
+        return row;
 
     }
 }

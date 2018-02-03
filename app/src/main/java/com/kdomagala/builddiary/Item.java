@@ -8,12 +8,9 @@ import java.util.Date;
 import android.content.Intent;
 import android.util.Log;
 
-import static android.content.ContentValues.TAG;
-import static java.lang.Double.valueOf;
-
 public class Item {
 
-    public static final String ITEM_SEP = System.getProperty("line.separator");
+    private static final String ITEM_SEP = System.getProperty("line.separator");
     private static final String TAG = "BuilderDiary";
 
     public final static String TITLE = "title";
@@ -21,44 +18,27 @@ public class Item {
     public final static String DATE = "date";
     public final static String CATEGORY = "category";
     public final static String FILENAME = "filename";
-    //public final static int POSITION = 0;
 
     public final static SimpleDateFormat FORMAT = new SimpleDateFormat(
             "dd-MM-yyyy", Locale.US);
 
-    private String mTitle = new String();
+    private String mTitle;
     private Double mCost = 0.0;
-    //private Status mStatus = Status.NOTDONE;
     private Date mDate = new Date();
-    private String mCategory = new String();
-    //private int mPosition = 0;
+    private String mCategory;
 
-    Item(String title, Double cost, /*Status status,*/ Date date, String category) {
+    Item(String title, Double cost, Date date, String category) {
         this.mTitle = title;
         this.mCost = cost;
-        //this.mStatus = status;
         this.mDate = date;
         this.mCategory = category;
     }
-
-    //Item(String title, Double cost, /*Status status,*/ Date date, String category, Integer position) {
-     //   this.mTitle = title;
-      //  this.mCost = cost;
-        //this.mStatus = status;
-      //  this.mDate = date;
-       // this.mCategory = category;
-       // this.mPosition = position;
-    //}
-
-    // Create a new Item from data packaged in an Intent
 
     Item(Intent intent) {
 
         mTitle = intent.getStringExtra(Item.TITLE);
         mCost = intent.getDoubleExtra(Item.COST, 0.0);
         mCategory = intent.getStringExtra(Item.CATEGORY);
-        //mStatus = Status.valueOf(intent.getStringExtra(Item.STATUS));
-        //mStatus = Status.valueOf(intent.getStringExtra(Item.STATUS));
 
         try {
             Log.i(TAG,"Enter parse date" );
@@ -69,7 +49,6 @@ public class Item {
             mDate = new Date();
             Log.i(TAG, "Exit catch date");
         }
-        //mPosition = intent.getIntExtra("position",0);
     }
 
     public String getTitle() {
@@ -86,19 +65,9 @@ public class Item {
 
     public String getCategory() {return mCategory;}
 
-    public void setCategory(String category) {mCategory = category;}
+    //public void setCategory(String category) {mCategory = category;}
 
-    public void setCost(Double cost) {
-        mCost = cost;
-    }
-
-   /* public Status getStatus() {
-        return mStatus;
-    }
-
-    public void setStatus(Status status) {
-        mStatus = status;
-    }*/
+    //public void setCost(Double cost) {mCost = cost;}
 
     public Date getDate() {
         return mDate;
@@ -111,37 +80,23 @@ public class Item {
     // Take a set of String data values and
     // package them for transport in an Intent
 
-    public static void packageIntent(Intent intent, String title,
-                                     Double cost, /*Status status,*/ String date, String category) {
+    public static void packageIntent(Intent intent, String title, Double cost, String date, String category) {
 
         intent.putExtra(Item.TITLE, title);
         intent.putExtra(Item.COST, cost);
-        //intent.putExtra(Item.STATUS, status.toString());
         intent.putExtra(Item.DATE, date);
         intent.putExtra(Item.CATEGORY, category);
 
     }
-
-    /* public static void packageIntent(Intent intent, String title,
-                                   Double cost, /*Status status,*/ /*String date, String category, int position) {
-
-       intent.putExtra(Item.TITLE, title);
-       intent.putExtra(Item.COST, cost);
-        //intent.putExtra(Item.STATUS, status.toString());
-        intent.putExtra(Item.DATE, date);
-        intent.putExtra(Item.CATEGORY, category);
-        intent.putExtra("position", position);
-    }
-    */
 
     public String toString() {
-        return mTitle + ITEM_SEP + mCost + /*ITEM_SEP + mStatus +*/ ITEM_SEP
+        return mTitle + ITEM_SEP + mCost + ITEM_SEP
                 + FORMAT.format(mDate) + ITEM_SEP + mCategory;
     }
 
     public String toLog() {
         return "Title:" + mTitle + ITEM_SEP + "Cost:" + mCost + ITEM_SEP + "Category:" + mCategory
-                + ITEM_SEP +/* "Status:" + mStatus + ITEM_SEP +*/ "Date:"
+                + ITEM_SEP + "Date:"
                 + FORMAT.format(mDate) + "\n";
     }
 

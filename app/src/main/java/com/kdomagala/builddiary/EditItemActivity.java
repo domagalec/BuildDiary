@@ -1,5 +1,9 @@
 package com.kdomagala.builddiary;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -35,10 +39,13 @@ public class EditItemActivity extends AppCompatActivity {
     private EditText mCost;
     private Spinner mCategorySpinner;
 
+    private AdView mAdView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if(getSupportActionBar() != null){
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
@@ -57,6 +64,11 @@ public class EditItemActivity extends AppCompatActivity {
         mTitleText = findViewById(R.id.title);
         mTitleText.setText(i.getStringExtra("title"));
         mTitleText.setSelection(mTitleText.getText().length());
+
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
 
         mCost = findViewById(R.id.cost);
 
@@ -92,7 +104,7 @@ public class EditItemActivity extends AppCompatActivity {
             }
         }) ;
 
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         dateView = findViewById(R.id.date);
         dateView.setText(Item.FORMAT.format(date));
