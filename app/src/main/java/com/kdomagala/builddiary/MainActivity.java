@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
-            //TODO - CHANGE AD ID in item_view.xml
+            //TODO - CHANGE AD ID in new_item.xml
 
             MobileAds.initialize(this, "ca-app-pub-6481645071930655~1866390299");
             mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
