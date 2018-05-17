@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
 
                     ListView detailsView = dialogView.findViewById(R.id.detailsView);
 
-                    DetailsAdapter adapter = new DetailsAdapter(listMap);
+                    DetailsAdapter adapter = new DetailsAdapter(listMap, getTotalCost());
 
                     detailsView.setAdapter(adapter);
 
