@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayUseLogoEnabled(true);
 
             // Create a new ListAdapter for this ListActivity's ListView
-            mAdapter = new ItemListAdapter(getApplicationContext());
+            mAdapter = new ItemListAdapter(getBaseContext());
 
             setContentView(R.layout.main);
 

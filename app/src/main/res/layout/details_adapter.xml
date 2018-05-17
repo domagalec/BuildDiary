@@ -15,8 +15,6 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@id/detailsCostView"
-            android:layout_toStartOf="@id/detailsCostView"
             android:text="@string/show_details"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"/>
@@ -27,10 +25,36 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
+            android:layout_toLeftOf="@id/detailsProgressBar"
+            android:layout_toStartOf="@id/detailsProgressBar"
             android:text="@string/item_cost"
             android:paddingTop="5dp"
             android:paddingBottom="5dp" />
+
+        <ProgressBar
+            android:id="@+id/detailsProgressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:progressDrawable="@drawable/gradient_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="10dp"
+            android:layout_toLeftOf="@id/detailsPercentView"
+            android:layout_toStartOf="@id/detailsPercentView"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_alignTop="@id/detailsPercentView"
+            android:layout_alignBottom="@id/detailsPercentView"
+            />
+
+        <TextView
+            android:id="@+id/detailsPercentView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:text="@string/percent" />
 
     </RelativeLayout>

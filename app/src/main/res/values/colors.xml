@@ -7,4 +7,6 @@
     <color name="yellowdark2">#cec323</color>
     <color name="yellowdark">#d1ba0a</color>
     <color name="yellow">#ffe30f</color>
+    <!--<color name="primary_text_material_dark">#000000</color>
+    <color name="text_color_primary">#000000</color>-->
 </resources>
